@@ -1,0 +1,25 @@
+{
+  "name": "taptown",
+  "version": "0.1.0",
+  "description": "Sim City and Cities Skylines inspired game, built on WebGL",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesbmadden/taptown.git"
+  },
+  "author": "James Madden",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesbmadden/taptown/issues"
+  },
+  "homepage": "https://github.com/jamesbmadden/taptown#readme",
+  "dependencies": {
+    "typescript": "^4.5.4",
+    "vite": "^2.7.10"
+  }
+}

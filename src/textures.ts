@@ -1,4 +1,4 @@
-export default function loadTexture(gl: WebGLRenderingContext, url: string) {
+export default function loadTexture(gl: WebGLRenderingContext, url: string): Promise<WebGLTexture> {
 
   return new Promise((resolve, reject) => {
 

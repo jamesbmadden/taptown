@@ -5,6 +5,7 @@ import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
 
 import loadTexture from './textures';
+import loadModel from './model';
 
 // global variables
 let ambient;
@@ -90,11 +91,13 @@ async function init () {
   const vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   
-  const positions = new Float32Array([
+  /*const positions = new Float32Array([
     0.0, 0.5, 0.0, 1.0,
     -0.5, -0.5, 0.0, 1.0,
     0.5, -0.5, 0.0, 1.0
-  ]);
+  ]);*/
+  const positions = (await loadModel(gl, './src/models/test.gltf')).buffers.vertex;
+  console.log(positions);
   gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
   loop(programInfo, vertexBuffer);
@@ -114,7 +117,7 @@ function loop (programInfo, buffer) {
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   {
-    const numComponents = 4;  // pull out 2 values per iteration
+    const numComponents = 3;  // pull out 2 values per iteration
     const type = gl.FLOAT;    // the data in the buffer is 32bit floats
     const normalize = false;  // don't normalize
     const stride = 0;         // how many bytes to get from one set of values to the next

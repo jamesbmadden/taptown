@@ -149,24 +149,26 @@ function render (programInfo, modelInfo: Model) {
 
   mat4.translate(modelViewMatrix,     // destination matrix
     modelViewMatrix,     // matrix to translate
-    [0.0, 1.0, -3.0]);  // amount to translate // NOTE: Due to perspective Z is totally irellevant lol
+    [0.0, 1.0, -3.0]);  // amount to translate 
   mat4.rotateX(modelViewMatrix,
     modelViewMatrix,
     45 * Math.PI / 180
   )
-  //mat4.rotateY(modelViewMatrix,
-  //  modelViewMatrix,
-  //  45 * Math.PI / 180
-  //)
+  mat4.rotateY(modelViewMatrix,
+    modelViewMatrix,
+    45 * Math.PI / 180
+  )
 
   // run a loop to draw each tile
-  for (let tile of map) {
+  for (let i = 0; i < map.length; i++) {
 
-    // calculate the coordinates
-    
+    // get the coordinates
+    let x = i % 8; // THIS WILL CHANGE WHEN RENDERING BECOMES ONLY THE SUBSECTION OF MAP VISIBLE
+    let z = Math.floor(i / 8); // SAME AS ABOVE
+
+    // drawTile will adjust positioning based on the x/y provided :)
+    drawTile(gl, modelInfo, [x, z], programInfo, projectionMatrix, modelViewMatrix);
 
   }
-
-  drawTile(gl, modelInfo, [0, 0], programInfo, projectionMatrix, modelViewMatrix);
 
 }

@@ -23,6 +23,10 @@ let camera = new Camera();
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
+// make sure camera knows how to adjust between device pixels and WebGL tiles
+let ratioX = innerWidth / buildingsPerRow;
+let ratioY = innerHeight / (buildingsPerRow * (innerHeight / innerWidth)); // calculate buildings per column
+camera.setPixelToTileRatio(ratioX, ratioY);
 
 const gl = canvas.getContext('webgl');
 
@@ -31,6 +35,10 @@ window.addEventListener('resize', () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
   buildingsPerRow = 2 * (innerWidth / 200);
+  // make sure camera knows how to adjust between device pixels and WebGL tiles
+  let ratioX = innerWidth / buildingsPerRow;
+  let ratioY = innerHeight / (buildingsPerRow * (innerHeight / innerWidth)); // calculate buildings per column
+  camera.setPixelToTileRatio(ratioX, ratioY);
 });
 
 init();

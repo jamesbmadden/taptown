@@ -2,7 +2,7 @@ import * as Comlink from "comlink";
 
 class Buildings {
 
-  map = new Int8Array([
+  map = new Uint8Array([
     0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0,
   ]);

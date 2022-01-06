@@ -1,12 +1,36 @@
-import { Model } from './model';
+import loadModel, { Model } from './model';
 import { mat4 } from 'gl-matrix';
+
+/**
+ * Model array will be filled with each type of model
+ * 0 = empty = null
+ * 65535 = debug model
+ */
+const models: Model[] = [ null ];
+let initiated = false;
+
+/**
+ * loads each model type
+ */
+export async function init (gl: WebGLRenderingContext) {
+
+  // load debug model
+  models[65535] = await loadModel(gl, './src/models/Cafe.gltf');
+
+}
 
 /**
  * Takes a gl instance, a model object, coordinates, and a programInfo object to draw one tile. Designed to be looped.
  */
+export default function drawTile (gl: WebGLRenderingContext, modelId: number, [x, z]: [number, number], programInfo, projectionMatrix: mat4, masterViewMatrix: mat4) {
 
+  // make sure models have been loaded before starting rendering
+  if (!initiated) throw "Models aren't loaded!";
+  // now we can get the model
+  const model = models[modelId];
 
-export default function drawTile (gl: WebGLRenderingContext, model: Model, [x, z]: [number, number], programInfo, projectionMatrix: mat4, masterViewMatrix: mat4) {
+  // if the model number doesn't exist/is null, return now (don't draw anything)
+  if (!model) return;
 
   // adjust the master view matrix to align with the x/y coordinates provided
   const modelViewMatrix = mat4.create();

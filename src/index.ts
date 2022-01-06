@@ -5,8 +5,7 @@ import { mat4 } from 'gl-matrix';
 import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
 
-import loadModel, { Model } from './model';
-import drawTile from './drawTile';
+import drawTile, { init as initDrawTiles } from './drawTile';
 
 // global variables
 let ambient;
@@ -17,7 +16,7 @@ const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // each building is 2 x/z for reference
 let buildingsPerRow = 2 * (innerWidth / 200);
 // map of the world - which buildings go where, etc
-let map: Int16Array;
+let map: Uint16Array;
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -98,13 +97,14 @@ async function init () {
       texture: gl.getUniformLocation(shaderProgram, "uTexture")
     },
   };
-  
-  const modelInfo = await loadModel(gl, './src/models/Cafe.gltf');
+
+  // let drawTiles load the models
+  await initDrawTiles(gl);
 
   // setup loop and requestAnimationFrame
   const loop = (now) => {
 
-    render(programInfo, modelInfo);
+    render(programInfo);
     requestAnimationFrame(loop);
     
   }
@@ -114,7 +114,7 @@ async function init () {
 }
 
 // render
-function render (programInfo, modelInfo: Model) {
+function render (programInfo) {
 
   gl.clearColor(0, 0, 0, 1);
   gl.clearDepth(1.0);  // Clear everything
@@ -167,7 +167,7 @@ function render (programInfo, modelInfo: Model) {
     let z = Math.floor(i / 8); // SAME AS ABOVE
 
     // drawTile will adjust positioning based on the x/y provided :)
-    drawTile(gl, modelInfo, [x, z], programInfo, projectionMatrix, modelViewMatrix);
+    drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, modelViewMatrix);
 
   }
 

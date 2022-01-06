@@ -6,8 +6,17 @@ import { mat4 } from 'gl-matrix';
 
 export default class Camera {
 
+  // x and z position for the camera
   x: number = 0;
   z: number = 0;
+
+  // important variables to keep track of how movement should behave
+  _pointerDown = false;
+  _velocityX: number = 0;
+  _velocityY: number = 0;
+  // adjust between WebGL coordinates and device pixels
+  _pixelToTileX: number;
+  _pixelToTileZ: number;
 
   cameraMatrix: mat4 = mat4.create();
 
@@ -28,6 +37,11 @@ export default class Camera {
       45 * Math.PI / 180
     )
 
+  }
+
+  setPixelToTileRatio (x, z) {
+    this._pixelToTileX = x;
+    this._pixelToTileZ = z;
   }
 
 }

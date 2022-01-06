@@ -17,6 +17,9 @@ export default class Camera {
   // adjust between WebGL coordinates and device pixels
   _pixelToTileX: number;
   _pixelToTileZ: number;
+  // where the mouse used to be
+  _prevPointerX: number;
+  _prevPointerY: number;
 
   cameraMatrix: mat4 = mat4.create();
 
@@ -31,11 +34,51 @@ export default class Camera {
     mat4.rotateX(this.cameraMatrix,
       this.cameraMatrix,
       45 * Math.PI / 180
-    )
+    );
     mat4.rotateY(this.cameraMatrix,
       this.cameraMatrix,
       45 * Math.PI / 180
-    )
+    );
+
+    // now we need some events
+    document.addEventListener('pointerdown', () => this._pointerDown = true);
+    // set prev mouse position
+    document.addEventListener('pointerup', event => {
+      this._pointerDown = false;
+      this._prevPointerX = event.clientX;
+      this._prevPointerY = event.clientY;
+    });
+
+    document.addEventListener('pointermove', event => {
+
+      // if the mouse is up we don't need to move camera
+      if (this._pointerDown) {
+        // calculate difference in pixels
+        this._moveCamera(event.clientX - this._prevPointerX, event.clientY - this._prevPointerY);
+      }
+
+      // update prev pointer position
+      this._prevPointerX = event.clientX;
+      this._prevPointerY = event.clientY
+
+    });
+
+  }
+
+  _moveCamera (xPixels, yPixels) {
+
+    // amount to adjust based on the pixel amounts
+    const moveX = xPixels / this._pixelToTileX;
+    const moveZ = yPixels / this._pixelToTileZ;
+    console.log(moveX, moveZ);
+
+    this.x += moveX;
+    this.z += moveZ;
+
+    // because of rotation, trig must be used to calculate movement
+    const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) + moveZ * Math.sin(45 * Math.PI / 180);
+    const adjustedMoveZ = moveZ * Math.cos(45 * Math.PI / 180) + moveX * Math.sin(45 * Math.PI / 180);
+    mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMoveX, 0, adjustedMoveZ]);
 
   }
 

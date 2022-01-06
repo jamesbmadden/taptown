@@ -1,4 +1,3 @@
-import { resolveConfig } from 'vite';
 import loadTexture from './textures';
 
 export interface Model {

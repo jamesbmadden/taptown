@@ -5,8 +5,8 @@ import { mat4 } from 'gl-matrix';
 import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
 
-import loadTexture from './textures';
 import loadModel, { Model } from './model';
+import drawTile from './drawTile';
 
 // global variables
 let ambient;
@@ -16,6 +16,8 @@ const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
 // each building is 2 x/z for reference
 let buildingsPerRow = 2 * (innerWidth / 200);
+// map of the world - which buildings go where, etc
+let map: Int16Array;
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -44,6 +46,10 @@ async function init () {
 
   ambient = await new Ambient();
   buildings = await new Buildings();
+  // establish a callback so that any changes to buildings will update the map array
+  await buildings.setCallback(Comlink.proxy(newMap => {
+    map = newMap;
+  }));
   people = await new People();
 
   // now lets get some shaders going
@@ -153,66 +159,14 @@ function render (programInfo, modelInfo: Model) {
   //  45 * Math.PI / 180
   //)
 
-  // Tell WebGL how to pull out the positions from the position
-  // buffer into the vertexPosition attribute.
-  {
-    const numComponents = 3;  // pull out 2 values per iteration
-    const type = gl.FLOAT;    // the data in the buffer is 32bit floats
-    const normalize = false;  // don't normalize
-    const stride = 0;         // how many bytes to get from one set of values to the next
-    const offset = 0;         // how many bytes inside the buffer to start from
+  // run a loop to draw each tile
+  for (let tile of map) {
+
+    // calculate the coordinates
     
-    gl.bindBuffer(gl.ARRAY_BUFFER, modelInfo.buffers.vertex);
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexPosition,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-  }
-  // Again with tex coords
-  {
-    const numComponents = 2;  // pull out 2 values per iteration
-    const type = gl.FLOAT;    // the data in the buffer is 32bit floats
-    const normalize = false;  // don't normalize
-    const stride = 0;         // how many bytes to get from one set of values to the next
-    const offset = 0;         // how many bytes inside the buffer to start from
-    
-    gl.bindBuffer(gl.ARRAY_BUFFER, modelInfo.buffers.texCoords);
-    gl.vertexAttribPointer(
-        programInfo.attribLocations.textureCoordPosition,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset);
-    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoordPosition);
+
   }
 
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelInfo.buffers.index);
-  
-  gl.useProgram(programInfo.program);
-
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.projectionMatrix,
-    false,
-    projectionMatrix);
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.modelViewMatrix,
-    false,
-    modelViewMatrix);
-
-  // and bind the texture
-  gl.activeTexture(gl.TEXTURE0);
-  gl.bindTexture(gl.TEXTURE_2D, modelInfo.texture);
-  // Tell the shader we bound the texture to texture unit 0
-  gl.uniform1i(programInfo.uniformLocations.texture, 0);
-  
-  {
-    //gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
-    gl.drawElements(gl.TRIANGLES, modelInfo.indexCount, gl.UNSIGNED_SHORT, 0);
-  }
+  drawTile(gl, modelInfo, [0, 0], programInfo, projectionMatrix, modelViewMatrix);
 
 }

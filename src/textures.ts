@@ -21,6 +21,8 @@ export default function loadTexture(gl: WebGLRenderingContext, url: string): Pro
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       }
 
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
       // return the texture
       resolve(texture);
 

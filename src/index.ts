@@ -87,7 +87,7 @@ async function init () {
     },
   };
   
-  const modelInfo = await loadModel(gl, './src/models/cube.gltf');
+  const modelInfo = await loadModel(gl, './src/models/snowman.gltf');
 
   // setup loop and requestAnimationFrame
   const loop = (now) => {
@@ -135,7 +135,11 @@ function render (programInfo, modelInfo: Model) {
 
   mat4.translate(modelViewMatrix,     // destination matrix
     modelViewMatrix,     // matrix to translate
-    [-0.0, 0.0, -6.0]);  // amount to translate
+    [-0.0, 0.0, -3.0]);  // amount to translate
+  mat4.rotateX(modelViewMatrix,
+    modelViewMatrix,
+    0 * Math.PI / 180
+  )
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.

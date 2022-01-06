@@ -41,13 +41,13 @@ export default class Camera {
     );
 
     // now we need some events
-    document.addEventListener('pointerdown', () => this._pointerDown = true);
-    // set prev mouse position
-    document.addEventListener('pointerup', event => {
-      this._pointerDown = false;
+    document.addEventListener('pointerdown', event => {
+      this._pointerDown = true;
       this._prevPointerX = event.clientX;
       this._prevPointerY = event.clientY;
     });
+    // set prev mouse position
+    document.addEventListener('pointerup', () => this._pointerDown = false);
 
     document.addEventListener('pointermove', event => {
 

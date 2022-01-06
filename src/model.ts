@@ -36,8 +36,6 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     let nodeQueue = [ ...scene.nodes ];
     let nodeIndex = 0; // the node to process
 
-    console.log(nodeQueue);
-
     // list of indices for each mesh to write to
     let indexList = [];
     // list of vertices for each mesh to write to
@@ -103,7 +101,6 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
 
     // create list of textures
     const texture = await loadTexture(gl, modelJson.images[0].uri);
-    console.log(texture);
 
     // create vertex buffer
     const vertexBuffer = gl.createBuffer();
@@ -117,8 +114,6 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     const texCoordsBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordsBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoordsList), gl.STATIC_DRAW);
-
-    console.log(indexList, vertexList, texCoordsList);
 
     resolve({
 

@@ -80,10 +80,12 @@ async function init () {
     program: shaderProgram,
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
+      textureCoordPosition: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+      texture: gl.getUniformLocation(shaderProgram, "uTexture")
     },
   };
   
@@ -104,7 +106,7 @@ async function init () {
 // render
 function render (programInfo, modelInfo: Model) {
 
-  gl.clearColor(0.39, 0.65, 0.4, 1);
+  gl.clearColor(0, 0, 0, 1);
   gl.clearDepth(1.0);  // Clear everything
   gl.enable(gl.DEPTH_TEST);  // Enable depth testing
   gl.depthFunc(gl.LEQUAL);  // Near things obscure far things
@@ -138,7 +140,11 @@ function render (programInfo, modelInfo: Model) {
     [-0.0, 0.0, -3.0]);  // amount to translate
   mat4.rotateX(modelViewMatrix,
     modelViewMatrix,
-    0 * Math.PI / 180
+    45 * Math.PI / 180
+  )
+  mat4.rotateY(modelViewMatrix,
+    modelViewMatrix,
+    45 * Math.PI / 180
   )
 
   // Tell WebGL how to pull out the positions from the position
@@ -160,12 +166,28 @@ function render (programInfo, modelInfo: Model) {
         offset);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
   }
+  // Again with tex coords
+  {
+    const numComponents = 2;  // pull out 2 values per iteration
+    const type = gl.FLOAT;    // the data in the buffer is 32bit floats
+    const normalize = false;  // don't normalize
+    const stride = 0;         // how many bytes to get from one set of values to the next
+    const offset = 0;         // how many bytes inside the buffer to start from
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, modelInfo.buffers.texCoords);
+    gl.vertexAttribPointer(
+        programInfo.attribLocations.textureCoordPosition,
+        numComponents,
+        type,
+        normalize,
+        stride,
+        offset);
+    gl.enableVertexAttribArray(programInfo.attribLocations.textureCoordPosition);
+  }
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelInfo.buffers.index);
   
   gl.useProgram(programInfo.program);
-
-  // Set the shader uniforms
 
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.projectionMatrix,
@@ -175,6 +197,12 @@ function render (programInfo, modelInfo: Model) {
     programInfo.uniformLocations.modelViewMatrix,
     false,
     modelViewMatrix);
+
+  // and bind the texture
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, modelInfo.texture);
+  // Tell the shader we bound the texture to texture unit 0
+  gl.uniform1i(programInfo.uniformLocations.texture, 0);
   
   {
     //gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);

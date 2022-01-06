@@ -7,7 +7,7 @@ export interface Model {
     index: WebGLBuffer,
     texCoords?: WebGLBuffer
   },
-  textures?: WebGLTexture[],
+  texture: WebGLTexture,
   indexCount: number
 }
 
@@ -43,6 +43,8 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     let indexList = [];
     // list of vertices for each mesh to write to
     let vertexList = [];
+    // list of texture coordinates for each mesh to write to
+    let texCoordsList = [];
 
     while (nodeIndex < nodeQueue.length) {
 
@@ -83,11 +85,26 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         const vertexArray = new Float32Array(await vertexBlobSlice.arrayBuffer());
         vertexList.push(...vertexArray);
 
+        // grab the texture coords data
+        const texCoordsId = primitive.attributes.TEXCOORD_0;
+        const texCoordsAccessor = modelJson.accessors[texCoordsId];
+        const texCoordsBufferView = modelJson.bufferViews[texCoordsAccessor.bufferView];
+
+        // slice the blob to just this set of coords
+        const texCoordsBlobSlice = blob.slice(texCoordsBufferView.byteOffset, texCoordsBufferView.byteOffset + texCoordsBufferView.byteLength);
+        // convert to Float32Array then add to tex coords list
+        const texCoordsArray = new Float32Array(await texCoordsBlobSlice.arrayBuffer());
+        texCoordsList.push(...texCoordsArray);
+
       }
 
       nodeIndex++;
 
     }
+
+    // create list of textures
+    const texture = await loadTexture(gl, modelJson.images[0].uri);
+    console.log(texture);
 
     // create vertex buffer
     const vertexBuffer = gl.createBuffer();
@@ -97,16 +114,22 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexList), gl.STATIC_DRAW);
+    // create tex coords buffer
+    const texCoordsBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoordsList), gl.STATIC_DRAW);
 
-    console.log(indexList, vertexList);
+    console.log(indexList, vertexList, texCoordsList);
 
     resolve({
 
       buffers: {
         index: indexBuffer,
-        vertex: vertexBuffer
+        vertex: vertexBuffer,
+        texCoords: texCoordsBuffer
       },
-      indexCount: indexList.length
+      indexCount: indexList.length,
+      texture
 
     });
 

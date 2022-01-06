@@ -1,5 +1,10 @@
 
 
-export default `void main(void) {
-  gl_FragColor = vec4(1, 1, 1, 1);
+export default `varying highp vec2 vTextureCoord;
+uniform sampler2D uTexture;
+
+void main(void) {
+
+  gl_FragColor = texture2D(uTexture, vTextureCoord);
+  
 }`

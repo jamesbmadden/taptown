@@ -13,6 +13,9 @@ let ambient;
 let buildings;
 let people;
 const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
+// how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
+// each building is 2 x/z for reference
+let buildingsPerRow = 2 * (innerWidth / 200);
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -23,6 +26,7 @@ const gl = canvas.getContext('webgl');
 window.addEventListener('resize', () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
+  buildingsPerRow = 2 * (innerWidth / 200);
 });
 
 init();
@@ -89,7 +93,7 @@ async function init () {
     },
   };
   
-  const modelInfo = await loadModel(gl, './src/models/snowman.gltf');
+  const modelInfo = await loadModel(gl, './src/models/Cafe.gltf');
 
   // setup loop and requestAnimationFrame
   const loop = (now) => {
@@ -115,18 +119,20 @@ function render (programInfo, modelInfo: Model) {
 
   // create perspective matrix
   const fieldOfView = 90 * Math.PI / 180;   // in radians
-  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+  const aspect = gl.canvas.clientHeight / gl.canvas.clientWidth;
   const zNear = 0.1;
   const zFar = 100.0;
   const projectionMatrix = mat4.create();
+  // make projection matrix isometric
+  mat4.ortho(projectionMatrix, 0, buildingsPerRow, 0, buildingsPerRow * aspect, zNear, zFar);
 
   // note: glmatrix.js always has the first argument
   // as the destination to receive the result.
-  mat4.perspective(projectionMatrix,
-                   fieldOfView,
-                   aspect,
-                   zNear,
-                   zFar);
+  //mat4.perspective(projectionMatrix,
+  //                 fieldOfView,
+  //                 aspect,
+  //                 zNear,
+  //                 zFar);
 
   // Set the drawing position to the "identity" point, which is
   // the center of the scene.
@@ -137,15 +143,15 @@ function render (programInfo, modelInfo: Model) {
 
   mat4.translate(modelViewMatrix,     // destination matrix
     modelViewMatrix,     // matrix to translate
-    [-0.0, 0.0, -3.0]);  // amount to translate
+    [0.0, 1.0, -3.0]);  // amount to translate // NOTE: Due to perspective Z is totally irellevant lol
   mat4.rotateX(modelViewMatrix,
     modelViewMatrix,
     45 * Math.PI / 180
   )
-  mat4.rotateY(modelViewMatrix,
-    modelViewMatrix,
-    45 * Math.PI / 180
-  )
+  //mat4.rotateY(modelViewMatrix,
+  //  modelViewMatrix,
+  //  45 * Math.PI / 180
+  //)
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.

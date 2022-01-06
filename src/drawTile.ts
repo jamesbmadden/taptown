@@ -41,7 +41,7 @@ export default function drawTile (gl: WebGLRenderingContext, modelId: number, [x
 
   mat4.translate(modelViewMatrix,     // destination matrix
     masterViewMatrix,     // matrix to translate
-    [x * 2, 0, z * -2]);  // since one tile is 2 WebGL coords, adjust for that - deeper into the screen is negative z
+    [x * 2, 0, z * 2]);  // since one tile is 2 WebGL coords, adjust for that - deeper into the screen is negative z
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.

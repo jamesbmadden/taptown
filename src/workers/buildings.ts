@@ -3,8 +3,8 @@ import * as Comlink from "comlink";
 class Buildings {
 
   map = new Uint8Array([
-    0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0,
+    255, 0, 0, 255, 255, 0, 0, 255,
+    0, 255, 0, 255, 255, 255, 255, 0,
   ]);
 
   _cb: Function;

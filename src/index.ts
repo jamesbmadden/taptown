@@ -1,11 +1,12 @@
 import './styles.css';
 import * as Comlink from 'comlink';
+import { mat4 } from 'gl-matrix';
 
 import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
 
 import loadTexture from './textures';
-import loadModel from './model';
+import loadModel, { Model } from './model';
 
 // global variables
 let ambient;
@@ -40,12 +41,6 @@ async function init () {
   ambient = await new Ambient();
   buildings = await new Buildings();
   people = await new People();
-
-  // establish the rendering
-  gl.clearColor(0.39, 0.65, 0.4, 1);
-  gl.clearDepth(1.0);  // Clear everything
-  gl.enable(gl.DEPTH_TEST);  // Enable depth testing
-  gl.depthFunc(gl.LEQUAL);  // Near things obscure far things
 
   // now lets get some shaders going
   const vert = gl.createShader(gl.VERTEX_SHADER);
@@ -86,26 +81,28 @@ async function init () {
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
     },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
+      modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+    },
   };
-
-  const vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   
-  /*const positions = new Float32Array([
-    0.0, 0.5, 0.0, 1.0,
-    -0.5, -0.5, 0.0, 1.0,
-    0.5, -0.5, 0.0, 1.0
-  ]);*/
-  const positions = (await loadModel(gl, './src/models/test.gltf')).buffers.vertex;
-  console.log(positions);
-  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+  const modelInfo = await loadModel(gl, './src/models/cube.gltf');
 
-  loop(programInfo, vertexBuffer);
+  // setup loop and requestAnimationFrame
+  const loop = (now) => {
+
+    render(programInfo, modelInfo);
+    requestAnimationFrame(loop);
+    
+  }
+
+  requestAnimationFrame(loop);
 
 }
 
 // render
-function loop (programInfo, buffer) {
+function render (programInfo, modelInfo: Model) {
 
   gl.clearColor(0.39, 0.65, 0.4, 1);
   gl.clearDepth(1.0);  // Clear everything
@@ -114,6 +111,32 @@ function loop (programInfo, buffer) {
   
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+  // create perspective matrix
+  const fieldOfView = 90 * Math.PI / 180;   // in radians
+  const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+  const zNear = 0.1;
+  const zFar = 100.0;
+  const projectionMatrix = mat4.create();
+
+  // note: glmatrix.js always has the first argument
+  // as the destination to receive the result.
+  mat4.perspective(projectionMatrix,
+                   fieldOfView,
+                   aspect,
+                   zNear,
+                   zFar);
+
+  // Set the drawing position to the "identity" point, which is
+  // the center of the scene.
+  const modelViewMatrix = mat4.create();
+
+  // Now move the drawing position a bit to where we want to
+  // start drawing the square.
+
+  mat4.translate(modelViewMatrix,     // destination matrix
+    modelViewMatrix,     // matrix to translate
+    [-0.0, 0.0, -6.0]);  // amount to translate
+
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   {
@@ -121,9 +144,9 @@ function loop (programInfo, buffer) {
     const type = gl.FLOAT;    // the data in the buffer is 32bit floats
     const normalize = false;  // don't normalize
     const stride = 0;         // how many bytes to get from one set of values to the next
-                              // 0 = use type and numComponents above
     const offset = 0;         // how many bytes inside the buffer to start from
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    
+    gl.bindBuffer(gl.ARRAY_BUFFER, modelInfo.buffers.vertex);
     gl.vertexAttribPointer(
         programInfo.attribLocations.vertexPosition,
         numComponents,
@@ -133,13 +156,25 @@ function loop (programInfo, buffer) {
         offset);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
   }
+
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelInfo.buffers.index);
   
   gl.useProgram(programInfo.program);
+
+  // Set the shader uniforms
+
+  gl.uniformMatrix4fv(
+    programInfo.uniformLocations.projectionMatrix,
+    false,
+    projectionMatrix);
+  gl.uniformMatrix4fv(
+    programInfo.uniformLocations.modelViewMatrix,
+    false,
+    modelViewMatrix);
   
   {
-    const offset = 0;
-    const vertexCount = 3;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    //gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    gl.drawElements(gl.TRIANGLES, modelInfo.indexCount, gl.UNSIGNED_SHORT, 0);
   }
 
 }

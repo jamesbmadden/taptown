@@ -4,7 +4,7 @@ import { mat4 } from 'gl-matrix';
 /**
  * Model array will be filled with each type of model
  * 0 = empty = null
- * 65535 = debug model
+ * 255 = debug model (largest number for a Uint8)
  */
 const models: Model[] = [ null ];
 let initiated = false;
@@ -15,7 +15,7 @@ let initiated = false;
 export async function init (gl: WebGLRenderingContext) {
 
   // load debug model
-  models[65535] = await loadModel(gl, './src/models/Cafe.gltf');
+  models[255] = await loadModel(gl, './src/models/Cafe.gltf');
 
 
   // tell the drawTile function we're good to go

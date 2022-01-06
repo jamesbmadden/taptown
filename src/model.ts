@@ -46,6 +46,9 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
 
     while (nodeIndex < nodeQueue.length) {
 
+      // what to base index 0 for the node to
+      let index0 = vertexList.length / 3;
+
       // get a reference to the node
       const node = modelJson.nodes[nodeQueue[nodeIndex]];
       // if the node has children, add them to the queue
@@ -66,7 +69,8 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         const indexBlobSlice = blob.slice(indexBufferView.byteOffset, indexBufferView.byteOffset + indexBufferView.byteLength);
         // convert to Int16Array then add to index list
         const indexArray = new Int16Array(await indexBlobSlice.arrayBuffer());
-        indexList.push(...indexArray);
+        // adjust the indices so that multiple objects don't clash
+        indexList.push(...indexArray.map(index => index + index0));
 
         // grab the vertex data
         const vertexId = primitive.attributes.POSITION;

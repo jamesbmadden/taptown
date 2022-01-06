@@ -6,6 +6,7 @@ import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
 
 import drawTile, { init as initDrawTiles } from './drawTile';
+import Camera from './camera';
 
 // global variables
 let ambient;
@@ -17,6 +18,8 @@ const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 let buildingsPerRow = 2 * (innerWidth / 200);
 // map of the world - which buildings go where, etc
 let map: Uint16Array;
+// x and z position, which will be changed by either swiping or clicking and dragging
+let camera = new Camera();
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -140,25 +143,6 @@ function render (programInfo) {
   //                 zNear,
   //                 zFar);
 
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
-  const modelViewMatrix = mat4.create();
-
-  // Now move the drawing position a bit to where we want to
-  // start drawing the square.
-
-  mat4.translate(modelViewMatrix,     // destination matrix
-    modelViewMatrix,     // matrix to translate
-    [0.0, 1.0, -3.0]);  // amount to translate 
-  mat4.rotateX(modelViewMatrix,
-    modelViewMatrix,
-    45 * Math.PI / 180
-  )
-  mat4.rotateY(modelViewMatrix,
-    modelViewMatrix,
-    45 * Math.PI / 180
-  )
-
   // run a loop to draw each tile
   for (let i = 0; i < map.length; i++) {
 
@@ -167,7 +151,7 @@ function render (programInfo) {
     let z = Math.floor(i / 8); // SAME AS ABOVE
 
     // drawTile will adjust positioning based on the x/y provided :)
-    drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, modelViewMatrix);
+    drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
 
   }
 

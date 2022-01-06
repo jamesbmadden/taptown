@@ -76,7 +76,7 @@ export default class Camera {
     this.z += moveZ;
 
     // because of rotation, trig must be used to calculate movement
-    const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) + moveZ * Math.sin(45 * Math.PI / 180);
+    const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) - moveZ * Math.sin(45 * Math.PI / 180);
     const adjustedMoveZ = moveZ * Math.cos(45 * Math.PI / 180) + moveX * Math.sin(45 * Math.PI / 180);
     mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMoveX, 0, adjustedMoveZ]);
 

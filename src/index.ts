@@ -16,6 +16,7 @@ const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
 // each building is 2 x/z for reference
 let buildingsPerRow = 2 * (innerWidth / 200);
+let buildingsPerColumn = 2 * (innerHeight / 200);
 // map of the world - which buildings go where, etc
 let map: Uint16Array;
 // x and z position, which will be changed by either swiping or clicking and dragging
@@ -25,7 +26,7 @@ canvas.width = innerWidth;
 canvas.height = innerHeight;
 // make sure camera knows how to adjust between device pixels and WebGL tiles
 let ratioX = innerWidth / buildingsPerRow;
-let ratioY = innerHeight / (buildingsPerRow * (innerHeight / innerWidth)); // calculate buildings per column
+let ratioY = innerHeight / buildingsPerColumn; // calculate buildings per column
 camera.setPixelToTileRatio(ratioX, ratioY);
 
 const gl = canvas.getContext('webgl');
@@ -35,9 +36,10 @@ window.addEventListener('resize', () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
   buildingsPerRow = 2 * (innerWidth / 200);
+  buildingsPerColumn = 2 * (innerHeight / 200);
   // make sure camera knows how to adjust between device pixels and WebGL tiles
   let ratioX = innerWidth / buildingsPerRow;
-  let ratioY = innerHeight / (buildingsPerRow * (innerHeight / innerWidth)); // calculate buildings per column
+  let ratioY = innerHeight / buildingsPerColumn; // calculate buildings per column
   camera.setPixelToTileRatio(ratioX, ratioY);
 });
 

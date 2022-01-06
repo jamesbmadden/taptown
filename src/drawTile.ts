@@ -17,6 +17,10 @@ export async function init (gl: WebGLRenderingContext) {
   // load debug model
   models[65535] = await loadModel(gl, './src/models/Cafe.gltf');
 
+
+  // tell the drawTile function we're good to go
+  initiated = true;
+
 }
 
 /**

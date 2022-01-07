@@ -1,3 +1,5 @@
+import { mat4, vec4 } from 'gl-matrix';
+
 import loadTexture from './textures';
 
 export interface Model {
@@ -56,6 +58,12 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
       // not all nodes have meshes, so skip this part if there isn't one
       if (node.mesh !== undefined) {
 
+        // create a transformation matrix for this node
+        let transformationMatrix: mat4 = mat4.create();
+
+        // if there's a translation, apply it
+        if (node.translation) mat4.translate(transformationMatrix, transformationMatrix, node.translation);
+
         // there's only one primitive per node, so read that directly
         const primitive = modelJson.meshes[node.mesh].primitives[0];
 
@@ -80,7 +88,20 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         const vertexBlobSlice = blob.slice(vertexBufferView.byteOffset, vertexBufferView.byteOffset + vertexBufferView.byteLength);
         // convert to Float32Array then add to vertex list
         const vertexArray = new Float32Array(await vertexBlobSlice.arrayBuffer());
-        vertexList.push(...vertexArray);
+
+        // the vertices have to have transformations applied
+        for (let i = 0; i < vertexArray.length; i += 4) {
+
+          // grab four entries
+          let subVertices = vertexArray.slice(i, i + 4);
+
+          // apply the transformation matrix
+          vec4.transformMat4(subVertices, subVertices, transformationMatrix);
+
+          // now push to vertex list
+          vertexList.push(...subVertices);
+
+        }
 
         // grab the texture coords data
         const texCoordsId = primitive.attributes.TEXCOORD_0;

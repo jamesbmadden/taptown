@@ -120,7 +120,7 @@ async function init () {
 
     let delta = now - lastTime;
     // camera must be updated before render to get any moving done
-    camera.update(delta);
+    //camera.update(delta);
     render(programInfo);
     requestAnimationFrame(loop);
 
@@ -160,16 +160,44 @@ function render (programInfo) {
   //                 zNear,
   //                 zFar);
 
+  const TILES_PER_ROW = 20; // this is a temp number it will probably expand later
+
+  const tilesToDraw = 20 * buildingsPerColumn;
+  const startX = Math.floor(camera.x / 2);
+  const startZ = Math.floor(camera.z / 2);
+
+  // for each row
+  for (let z = startZ; z < startZ + buildingsPerColumn; z++) {
+    // for each row
+    // get the start index in the list
+    let startIndex = z * 20;
+
+    // now go through each column and draw the tile
+    for (let x = startX; x < startX + buildingsPerRow; x ++) {
+
+      let i = startIndex + x;
+
+      // if out of bounds, do not take another, just turn off
+      if (!(x >= TILES_PER_ROW) && !(x < 0)) {
+
+        drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
+
+      }
+
+    }
+
+  }
+
   // run a loop to draw each tile
-  for (let i = 0; i < map.length; i++) {
+  /*for (let i = 0; i < tilesToDraw; i++) {
 
     // get the coordinates
-    let x = i % 8; // THIS WILL CHANGE WHEN RENDERING BECOMES ONLY THE SUBSECTION OF MAP VISIBLE
-    let z = Math.floor(i / 8); // SAME AS ABOVE
+    let x = i % 20; // THIS WILL CHANGE WHEN RENDERING BECOMES ONLY THE SUBSECTION OF MAP VISIBLE
+    let z = Math.floor(i / 20); // SAME AS ABOVE
 
     // drawTile will adjust positioning based on the x/y provided :)
     drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
 
-  }
+  }*/
 
 }

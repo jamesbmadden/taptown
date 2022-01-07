@@ -173,12 +173,12 @@ function render (programInfo) {
     let startIndex = z * 20;
 
     // now go through each column and draw the tile
-    for (let x = startX; x < startX + buildingsPerRow; x ++) {
+    for (let x = startX; x < startX + buildingsPerRow * 2; x ++) {
 
       let i = startIndex + x;
 
       // if out of bounds, do not take from another row, just render an out of bounds tile
-      if (!(x >= TILES_PER_ROW) && !(x < 0)) {
+      if (!(x >= TILES_PER_ROW) && !(x < 0) && !(z < 0) && !(z >= TILES_PER_ROW)) {
 
         drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
 

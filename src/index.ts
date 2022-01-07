@@ -163,11 +163,11 @@ function render (programInfo) {
   const TILES_PER_ROW = 20; // this is a temp number it will probably expand later
 
   const tilesToDraw = 20 * buildingsPerColumn;
-  const startX = Math.floor(camera.x / 2);
-  const startZ = Math.floor(camera.z / 2);
+  const startX = Math.floor(camera.x / 2) - 1;
+  const startZ = Math.floor(camera.z / 2) - 5;
 
   // for each row
-  for (let z = startZ; z < startZ + buildingsPerColumn; z++) {
+  for (let z = startZ; z < startZ + buildingsPerColumn * 2; z++) {
     // for each row
     // get the start index in the list
     let startIndex = z * 20;

@@ -74,12 +74,16 @@ export default class Camera {
     const moveX = xPixels / this._pixelToTileX;
     const moveZ = yPixels / this._pixelToTileZ;
 
-    this.x += moveX;
-    this.z += moveZ;
-
     // because of rotation, trig must be used to calculate movement
     const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) - moveZ * Math.sin(45 * Math.PI / 180);
     const adjustedMoveZ = moveZ * Math.cos(45 * Math.PI / 180) + moveX * Math.sin(45 * Math.PI / 180);
+
+    // x and z need to stay related to game position
+    this.x -= adjustedMoveX;
+    this.z -= adjustedMoveZ;
+
+    console.log(this.x, this.z);
+
     mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMoveX, 0, adjustedMoveZ]);
 
   }

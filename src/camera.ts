@@ -55,11 +55,14 @@ export default class Camera {
       if (this._pointerDown) {
         // calculate difference in pixels
         this._moveCamera(event.clientX - this._prevPointerX, event.clientY - this._prevPointerY);
+        // and set velocity to the difference
+        this._velocityX = event.clientX - this._prevPointerX;
+        this._velocityY = event.clientY - this._prevPointerY;
       }
 
       // update prev pointer position
       this._prevPointerX = event.clientX;
-      this._prevPointerY = event.clientY
+      this._prevPointerY = event.clientY;
 
     });
 
@@ -70,7 +73,6 @@ export default class Camera {
     // amount to adjust based on the pixel amounts
     const moveX = xPixels / this._pixelToTileX;
     const moveZ = yPixels / this._pixelToTileZ;
-    console.log(moveX, moveZ);
 
     this.x += moveX;
     this.z += moveZ;
@@ -85,6 +87,21 @@ export default class Camera {
   setPixelToTileRatio (x, z) {
     this._pixelToTileX = x;
     this._pixelToTileZ = z;
+  }
+
+  update (delta: number) {
+
+    let framesElapsed = delta / 16.66667;
+    // if touch is not down, do velocity stuff
+    if (!this._pointerDown) {
+
+      // half velocity, round it to the nearest 10
+      this._velocityX = Math.floor(Math.abs(this._velocityX) / 10.25 * framesElapsed) * Math.sign(this._velocityX) * 10 * framesElapsed;
+      this._velocityY = Math.floor(Math.abs(this._velocityY) / 10.25 * framesElapsed) * Math.sign(this._velocityY) * 10 * framesElapsed;
+
+      this._moveCamera(this._velocityX, this._velocityY);
+
+    }
   }
 
 }

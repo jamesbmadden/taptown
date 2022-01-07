@@ -177,10 +177,15 @@ function render (programInfo) {
 
       let i = startIndex + x;
 
-      // if out of bounds, do not take another, just turn off
+      // if out of bounds, do not take from another row, just render an out of bounds tile
       if (!(x >= TILES_PER_ROW) && !(x < 0)) {
 
         drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
+
+      } else {
+
+        // 254 is code for out of bounds tile
+        drawTile(gl, 254, [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
 
       }
 

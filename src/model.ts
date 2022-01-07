@@ -1,4 +1,4 @@
-import { mat4, vec4 } from 'gl-matrix';
+import { mat4, vec3 } from 'gl-matrix';
 
 import loadTexture from './textures';
 
@@ -61,6 +61,10 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         // create a transformation matrix for this node
         let transformationMatrix: mat4 = mat4.create();
 
+        // if there's a scale, apply it
+        if (node.scale) mat4.scale(transformationMatrix, transformationMatrix, node.scale);
+        // if there's a rotation, apply it
+        if (node.rotation) mat4.rotate(transformationMatrix, transformationMatrix, Math.acos(node.rotation[4]) * 2, [node.rotation[0], node.rotation[1], node.rotation[2]])
         // if there's a translation, apply it
         if (node.translation) mat4.translate(transformationMatrix, transformationMatrix, node.translation);
 
@@ -89,17 +93,17 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         // convert to Float32Array then add to vertex list
         const vertexArray = new Float32Array(await vertexBlobSlice.arrayBuffer());
 
-        // the vertices have to have transformations applied
-        for (let i = 0; i < vertexArray.length; i += 4) {
+        // apply transformations
+        for (let i = 0; i < vertexArray.length; i += 3) {
 
-          // grab four entries
-          let subVertices = vertexArray.slice(i, i + 4);
+          // get the set of three vertices to operate on
+          let vertex: vec3 = [vertexArray[i], vertexArray[i + 1], vertexArray[i + 2]];
 
-          // apply the transformation matrix
-          vec4.transformMat4(subVertices, subVertices, transformationMatrix);
+          // apply the matrix transformation
+          vec3.transformMat4(vertex, vertex, transformationMatrix);
 
           // now push to vertex list
-          vertexList.push(...subVertices);
+          vertexList.push(...vertex);
 
         }
 

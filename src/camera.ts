@@ -82,8 +82,6 @@ export default class Camera {
     this.x -= adjustedMoveX;
     this.z -= adjustedMoveZ;
 
-    console.log(this.x, this.z);
-
     mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMoveX, 0, adjustedMoveZ]);
 
   }

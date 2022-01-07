@@ -114,11 +114,18 @@ async function init () {
   // let drawTiles load the models
   await initDrawTiles(gl);
 
+  let lastTime = 0;
   // setup loop and requestAnimationFrame
   const loop = (now) => {
 
+    let delta = now - lastTime;
+    // camera must be updated before render to get any moving done
+    camera.update();
     render(programInfo);
     requestAnimationFrame(loop);
+
+    // allow delta to function
+    lastTime = now;
     
   }
 

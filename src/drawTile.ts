@@ -14,6 +14,8 @@ let initiated = false;
  */
 export async function init (gl: WebGLRenderingContext) {
 
+  // load out of bounds model
+  models[254] = await loadModel(gl, './src/models/outofbounds.gltf');
   // load debug model
   models[255] = await loadModel(gl, './src/models/Cafe.gltf');
 

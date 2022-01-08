@@ -11,8 +11,25 @@ let initiated = false;
 
 /**
  * loads each model type
+ * 
+ * 0 = empty
+ * 1 = road (x direction) // Road types are processed in the buildings worker
+ * 2 = road (right only)
+ * 3 = road (left only)
+ * 4 = road (z direction)
+ * 5 = road (up only)
+ * 6 = road (down only)
+ * 7 = road (cross)
+ * 8 = road (up/left)
+ * 9 = road (left/down)
+ * 10 = road (down/right)
+ * 11 = road (right/up)
+ *
  */
 export async function init (gl: WebGLRenderingContext) {
+
+  // load the roads
+  models[1] = await loadModel(gl, './src/models/Road-x.gltf');
 
   // load out of bounds model
   models[254] = await loadModel(gl, './src/models/outofbounds.gltf');

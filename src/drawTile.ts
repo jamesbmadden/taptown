@@ -4,7 +4,6 @@ import { mat4 } from 'gl-matrix';
 /**
  * Model array will be filled with each type of model
  * 0 = empty = null
- * 255 = debug model (largest number for a Uint8)
  */
 const models: Model[] = [ null ];
 let initiated = false;
@@ -29,6 +28,11 @@ let initiated = false;
  * 14 = road (-|) ✅
  * 15 = road (_|_) ✅
  * 16 = road (single) ✅
+ * 
+ * ...
+ * 
+ * 254 = out of bounds
+ * 255 = debug model (largest number for a Uint8)
  *
  */
 export async function init (gl: WebGLRenderingContext) {

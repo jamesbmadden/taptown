@@ -7,12 +7,12 @@ import fShaderSource from './models/shader.frag';
 
 import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
+import { updateUIFromProperties } from './ui';
 
 // global variables
 let ambient;
 let buildings;
 let people;
-let player;
 const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
 // each building is 2 x/z for reference
@@ -56,12 +56,9 @@ async function init () {
   Buildings.log();
   const People: any = Comlink.wrap(new Worker('src/workers/people.ts', { type: 'module' }));
   People.log();
-  const Player: any = Comlink.wrap(new Worker('src/workers/player.ts', { type: 'module' }));
-  Player.log();
 
   ambient = await new Ambient();
   buildings = await new Buildings();
-  player = await new Player();
   // establish a callback so that any changes to buildings will update the map array
   await buildings.setCallback(Comlink.proxy(newMap => {
     map = newMap;
@@ -120,20 +117,20 @@ async function init () {
 
   let lastTime = 0;
   // setup loop and requestAnimationFrame
-  const loop = (now) => {
+  const gameLoop = (now) => {
 
     let delta = now - lastTime;
     // camera must be updated before render to get any moving done
     // camera.update(delta);
     render(programInfo);
-    requestAnimationFrame(loop);
+    requestAnimationFrame(gameLoop);
 
     // allow delta to function
     lastTime = now;
     
   }
 
-  requestAnimationFrame(loop);
+  requestAnimationFrame(gameLoop);
 
 }
 

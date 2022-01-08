@@ -46,9 +46,9 @@ export async function init (gl: WebGLRenderingContext) {
   models[10] = await loadModel(gl, './src/models/Road-downright.gltf');
   models[11] = await loadModel(gl, './src/models/Road-rightup.gltf');
   models[12] = await loadModel(gl, './src/models/Road-T.gltf');
-  models[13] = await loadModel(gl, './src/models/Road-|-.gltf');
-  models[14] = await loadModel(gl, './src/models/Road--|.gltf');
-  models[15] = await loadModel(gl, './src/models/Road-_|_.gltf');
+  models[13] = await loadModel(gl, './src/models/Road-l-.gltf');
+  models[14] = await loadModel(gl, './src/models/Road--l.gltf');
+  models[15] = await loadModel(gl, './src/models/Road-_l_.gltf');
   models[16] = await loadModel(gl, './src/models/Road-single.gltf');
 
   // load out of bounds model

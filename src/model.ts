@@ -64,7 +64,12 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         // if there's a scale, apply it
         if (node.scale) mat4.scale(transformationMatrix, transformationMatrix, node.scale);
         // if there's a rotation, apply it
-        if (node.rotation) mat4.rotate(transformationMatrix, transformationMatrix, Math.acos(node.rotation[4]) * 2, [node.rotation[0], node.rotation[1], node.rotation[2]])
+        if (node.rotation) {
+          // create a rotation matrix from rotation quaternion
+          const rotationMatrix: mat4 = mat4.create();
+          mat4.fromQuat(rotationMatrix, node.rotation);
+          mat4.multiply(transformationMatrix, transformationMatrix, rotationMatrix);
+        }
         // if there's a translation, apply it
         if (node.translation) mat4.translate(transformationMatrix, transformationMatrix, node.translation);
 

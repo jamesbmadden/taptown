@@ -10,3 +10,12 @@ body {
   overflow-x: none;
   overscroll-behavior: none;
 }
+
+.money {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: black;
+  color: white;
+  font-size: 1.5rem;
+}

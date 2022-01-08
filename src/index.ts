@@ -64,6 +64,10 @@ async function init () {
     map = newMap;
   }));
   people = await new People();
+  // establish a callback so that updates to values will appear in UI
+  await people.setCallback(Comlink.proxy(properties => {
+    updateUIFromProperties(properties);
+  }));
 
   // now lets get some shaders going
   const vert = gl.createShader(gl.VERTEX_SHADER);

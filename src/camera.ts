@@ -3,7 +3,6 @@ import { mat4 } from 'gl-matrix';
 /**
  * Camera manages camera position and tracks pointer events
  */
-
 export default class Camera {
 
   // x and z position for the camera

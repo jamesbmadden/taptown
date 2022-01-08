@@ -120,7 +120,7 @@ async function init () {
 
     let delta = now - lastTime;
     // camera must be updated before render to get any moving done
-    camera.update(delta);
+    //camera.update(delta);
     render(programInfo);
     requestAnimationFrame(loop);
 

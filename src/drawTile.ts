@@ -13,23 +13,43 @@ let initiated = false;
  * loads each model type
  * 
  * 0 = empty
- * 1 = road (x direction) // Road types are processed in the buildings worker
- * 2 = road (right only)
- * 3 = road (left only)
- * 4 = road (z direction)
- * 5 = road (up only)
- * 6 = road (down only)
- * 7 = road (cross)
- * 8 = road (up/left)
- * 9 = road (left/down)
- * 10 = road (down/right)
- * 11 = road (right/up)
+ * 1 = road (x direction) ✅ // Road types are processed in the buildings worker
+ * 2 = road (right only) ✅
+ * 3 = road (left only) ✅
+ * 4 = road (z direction) ✅
+ * 5 = road (up only) ✅
+ * 6 = road (down only) ✅
+ * 7 = road (cross) ✅
+ * 8 = road (up/left) ✅
+ * 9 = road (left/down) ✅
+ * 10 = road (down/right) ✅
+ * 11 = road (right/up) ✅
+ * 12 = road (T) ✅
+ * 13 = road (|-) ✅
+ * 14 = road (-|) ✅
+ * 15 = road (_|_) ✅
+ * 16 = road (single) ✅
  *
  */
 export async function init (gl: WebGLRenderingContext) {
 
   // load the roads
   models[1] = await loadModel(gl, './src/models/Road-x.gltf');
+  models[2] = await loadModel(gl, './src/models/Road-right.gltf');
+  models[3] = await loadModel(gl, './src/models/Road-left.gltf');
+  models[4] = await loadModel(gl, './src/models/Road-y.gltf');
+  models[5] = await loadModel(gl, './src/models/Road-up.gltf');
+  models[6] = await loadModel(gl, './src/models/Road-down.gltf');
+  models[7] = await loadModel(gl, './src/models/Road-cross.gltf');
+  models[8] = await loadModel(gl, './src/models/Road-upleft.gltf');
+  models[9] = await loadModel(gl, './src/models/Road-leftdown.gltf');
+  models[10] = await loadModel(gl, './src/models/Road-downright.gltf');
+  models[11] = await loadModel(gl, './src/models/Road-rightup.gltf');
+  models[12] = await loadModel(gl, './src/models/Road-T.gltf');
+  models[13] = await loadModel(gl, './src/models/Road-|-.gltf');
+  models[14] = await loadModel(gl, './src/models/Road--|.gltf');
+  models[15] = await loadModel(gl, './src/models/Road-_|_.gltf');
+  models[16] = await loadModel(gl, './src/models/Road-single.gltf');
 
   // load out of bounds model
   models[254] = await loadModel(gl, './src/models/outofbounds.gltf');

@@ -71,7 +71,7 @@ export default class Camera {
 
     // amount to adjust based on the pixel amounts
     const moveX = xPixels / this._pixelToTileX;
-    const moveZ = yPixels / this._pixelToTileZ;
+    const moveZ = yPixels / this._pixelToTileZ * 1.425;
 
     // because of rotation, trig must be used to calculate movement
     const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) - moveZ * Math.sin(45 * Math.PI / 180);

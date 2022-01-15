@@ -1,6 +1,6 @@
 import './styles.css';
 import * as Comlink from 'comlink';
-import { mat4, vec3 } from 'gl-matrix';
+import { mat4, vec2 } from 'gl-matrix';
 
 import vShaderSource from './models/shader.vert';
 import fShaderSource from './models/shader.frag';
@@ -50,13 +50,15 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   // first, get it based on the X/Y position, THEN change perspective
   // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
   const localX = event.clientX / ratioX / 2;
-  const localY = event.clientY / ratioY / 2;
+  const localY = event.clientY / ratioY / 2 * 1.425;
 
-  const gameCoords: vec3 = [localX, 0, localY];
+  const gameCoords: vec2 = [localX, localY];
 
-  // now use trig to change perspective
-  //vec3.rotateX(gameCoords, gameCoords, [0, 0, 0], -45 * Math.PI / 180);
-  vec3.rotateY(gameCoords, gameCoords, [0, 0, 0], 45 * Math.PI / 180);
+  // now use vectors to change perspective
+  vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);
+  // floor the result 
+  vec2.floor(gameCoords, gameCoords);
+  // and that's the coordinates! Yay!
 
   console.log(gameCoords);
 });

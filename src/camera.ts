@@ -20,6 +20,9 @@ export default class Camera {
   _prevPointerX: number;
   _prevPointerY: number;
 
+  // state: whether or not camera is focusing on an object
+  _inFocusMode = false;
+
   cameraMatrix: mat4 = mat4.create();
 
   constructor () {
@@ -69,6 +72,9 @@ export default class Camera {
 
   _moveCamera (xPixels, yPixels) {
 
+    // if focus mode is on, the camera should not be movable
+    if (this._inFocusMode) return;
+
     // amount to adjust based on the pixel amounts
     const moveX = xPixels / this._pixelToTileX;
     const moveZ = yPixels / this._pixelToTileZ * 1.425;
@@ -108,6 +114,46 @@ export default class Camera {
       this._moveCamera(this._velocityX, this._velocityY);
 
     }
+  }
+
+  /**
+   * given a TILE coordinate, zoom in and focus on that building
+   */
+  enterFocus ([buildingX, buildingY]: vec2) {
+
+    // set focus mode to true
+    this._inFocusMode = true;
+
+
+  }
+
+  /**
+   * return to normal view
+   */
+  exitFocus () {
+
+    // construct new cameraMatrix based on position
+    this.cameraMatrix = mat4.create();
+    // align camera to starting position
+    mat4.translate(this.cameraMatrix,
+      this.cameraMatrix,
+      [0.0, 1.0, -3.0]);
+
+    // turn camera to isometric angle
+    mat4.rotateX(this.cameraMatrix,
+      this.cameraMatrix,
+      45 * Math.PI / 180
+    );
+    mat4.rotateY(this.cameraMatrix,
+      this.cameraMatrix,
+      45 * Math.PI / 180
+    );
+    // and move it into position
+    mat4.translate(this.cameraMatrix, this.cameraMatrix, [-this.x, 0, -this.z]);
+
+    // turn off focus mode
+    this._inFocusMode = false;
+
   }
 
 }

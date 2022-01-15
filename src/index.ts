@@ -44,6 +44,17 @@ window.addEventListener('resize', () => {
   camera.setPixelToTileRatio(ratioX, ratioY);
 });
 
+// when the canvas is clicked, find the in-game coords of the location
+canvas.addEventListener('click', (event: MouseEvent) => {
+
+  // first, get it based on the X/Y position, THEN change perspective
+  const localX = event.clientX / ratioX;
+  const localY = event.clientY / ratioY;
+  
+  console.log(localX, localY);
+
+});
+
 init();
 
 // initate everything before running the game loop

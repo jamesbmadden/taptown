@@ -3,7 +3,7 @@
  */
 
 const money = document.querySelector('.money');
-const population = document.querySelector('.population')
+const population = document.querySelector('.population');
 
 /**
  * get properties from player worker and update it

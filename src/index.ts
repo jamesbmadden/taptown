@@ -56,6 +56,11 @@ canvas.addEventListener('click', (event: MouseEvent) => {
 
   // now use vectors to change perspective
   vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);
+  // now it must be adjusted according to the camera's position
+  // camera position must be adjusted slightly to match what the screen actually looks like
+  // (camera positions, because its for the internal renderer and not game coordinates, need to be halved)
+  const cameraCoords: vec2 = [camera.x / 2 + 3.62, camera.z / 2 - 2.62];
+  vec2.add(gameCoords, gameCoords, cameraCoords);
   // floor the result 
   vec2.floor(gameCoords, gameCoords);
   // and that's the coordinates! Yay!

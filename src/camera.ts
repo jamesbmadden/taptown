@@ -1,4 +1,4 @@
-import { mat4 } from 'gl-matrix';
+import { mat4, vec2 } from 'gl-matrix';
 
 /**
  * Camera manages camera position and tracks pointer events
@@ -74,14 +74,19 @@ export default class Camera {
     const moveZ = yPixels / this._pixelToTileZ * 1.425;
 
     // because of rotation, trig must be used to calculate movement
-    const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) - moveZ * Math.sin(45 * Math.PI / 180);
-    const adjustedMoveZ = moveZ * Math.cos(45 * Math.PI / 180) + moveX * Math.sin(45 * Math.PI / 180);
+    //const adjustedMoveX = moveX * Math.cos(45 * Math.PI / 180) - moveZ * Math.sin(45 * Math.PI / 180);
+    //const adjustedMoveZ = moveZ * Math.cos(45 * Math.PI / 180) + moveX * Math.sin(45 * Math.PI / 180);
+
+    // try using a vec2 instead of manual trig to simplify things
+    const adjustedMove: vec2 = [moveX, moveZ];
+
+    vec2.rotate(adjustedMove, adjustedMove, [0, 0], 45 * Math.PI / 180);
 
     // x and z need to stay related to game position
-    this.x -= adjustedMoveX;
-    this.z -= adjustedMoveZ;
+    this.x -= adjustedMove[0];
+    this.z -= adjustedMove[1];
 
-    mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMoveX, 0, adjustedMoveZ]);
+    mat4.translate(this.cameraMatrix, this.cameraMatrix, [adjustedMove[0], 0, adjustedMove[1]]);
 
   }
 

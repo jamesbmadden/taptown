@@ -9,6 +9,10 @@ import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
 import { updateUIFromProperties } from './ui';
 
+import _Ambient from './workers/ambient?worker';
+import _Buildings from './workers/buildings?worker';
+import _People from './workers/people?worker';
+
 // global variables
 let ambient;
 let buildings;
@@ -77,11 +81,11 @@ init();
 async function init () {
 
   // set up workers
-  const Ambient: any = Comlink.wrap(new Worker('src/workers/ambient.ts', { type: 'module' }));
+  const Ambient: any = Comlink.wrap(new _Ambient());
   Ambient.log();
-  const Buildings: any = Comlink.wrap(new Worker('src/workers/buildings.ts', { type: 'module' }));
+  const Buildings: any = Comlink.wrap(new _Buildings());
   Buildings.log();
-  const People: any = Comlink.wrap(new Worker('src/workers/people.ts', { type: 'module' }));
+  const People: any = Comlink.wrap(new _People());
   People.log();
 
   ambient = await new Ambient();

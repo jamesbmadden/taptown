@@ -9,8 +9,12 @@ import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
 import { updateUIFromProperties } from './ui';
 
+// load workers
+// @ts-expect-error
 import _Ambient from './workers/ambient?worker';
+// @ts-expect-error
 import _Buildings from './workers/buildings?worker';
+// @ts-expect-error
 import _People from './workers/people?worker';
 
 // global variables
@@ -28,6 +32,7 @@ let map: Uint16Array;
 let camera = new Camera();
 
 // provide the camera object on window for easier debugging
+// @ts-expect-error
 window.camera = camera;
 
 canvas.width = innerWidth;

@@ -23,6 +23,9 @@ let map: Uint16Array;
 // x and z position, which will be changed by either swiping or clicking and dragging
 let camera = new Camera();
 
+// provide the camera object on window for easier debugging
+window.camera = camera;
+
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 // make sure camera knows how to adjust between device pixels and WebGL tiles
@@ -65,7 +68,7 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   vec2.floor(gameCoords, gameCoords);
   // and that's the coordinates! Yay!
 
-  console.log(gameCoords);
+  camera.enterFocus(gameCoords);
 });
 
 init();

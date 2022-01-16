@@ -2,8 +2,8 @@ import './styles.css';
 import * as Comlink from 'comlink';
 import { mat4, vec2 } from 'gl-matrix';
 
-import vShaderSource from './models/shader.vert';
-import fShaderSource from './models/shader.frag';
+import vShaderSource from './shaders/shader.vert';
+import fShaderSource from './shaders/shader.frag';
 
 import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';

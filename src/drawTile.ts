@@ -3,37 +3,37 @@ import { mat4 } from 'gl-matrix';
 
 // import URLs for all the models
 // @ts-ignore
-import roadX from './models/road-x.gltf?url';
+import roadX from './models/Road-x.gltf?url';
 // @ts-ignore
-import roadRight from './models/road-right.gltf?url';
+import roadRight from './models/Road-right.gltf?url';
 // @ts-ignore
-import roadLeft from './models/road-left.gltf?url';
+import roadLeft from './models/Road-left.gltf?url';
 // @ts-ignore
-import roadZ from './models/road-y.gltf?url';
+import roadZ from './models/Road-y.gltf?url';
 // @ts-ignore
-import roadUp from './models/road-up.gltf?url';
+import roadUp from './models/Road-up.gltf?url';
 // @ts-ignore
-import roadDown from './models/road-down.gltf?url';
+import roadDown from './models/Road-down.gltf?url';
 // @ts-ignore
-import roadCross from './models/road-cross.gltf?url';
+import roadCross from './models/Road-cross.gltf?url';
 // @ts-ignore
-import roadUpLeft from './models/road-upleft.gltf?url';
+import roadUpLeft from './models/Road-upleft.gltf?url';
 // @ts-ignore
-import roadLeftDown from './models/road-leftdown.gltf?url';
+import roadLeftDown from './models/Road-leftdown.gltf?url';
 // @ts-ignore
-import roadDownRight from './models/road-downright.gltf?url';
+import roadDownRight from './models/Road-downright.gltf?url';
 // @ts-ignore
-import roadRightUp from './models/road-rightup.gltf?url';
+import roadRightUp from './models/Road-rightup.gltf?url';
 // @ts-ignore
-import roadT from './models/road-T.gltf?url';
+import roadT from './models/Road-T.gltf?url';
 // @ts-ignore
-import roadTriRight from './models/road-l-.gltf?url';
+import roadTriRight from './models/Road-l-.gltf?url';
 // @ts-ignore
-import roadTriLeft from './models/road--l.gltf?url';
+import roadTriLeft from './models/Road--l.gltf?url';
 // @ts-ignore
-import roadTriUp from './models/road-_l_.gltf?url';
+import roadTriUp from './models/Road-_l_.gltf?url';
 // @ts-ignore
-import roadSingle from './models/road-single.gltf?url';
+import roadSingle from './models/Road-single.gltf?url';
 // @ts-ignore
 import outOfBounds from './models/outofbounds.gltf?url';
 // @ts-ignore

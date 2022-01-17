@@ -77,7 +77,7 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   vec2.floor(gameCoords, gameCoords);
   // and that's the coordinates! Yay!
 
-  camera.enterFocus(gameCoords);
+  // camera.enterFocus(gameCoords);
 });
 
 init();

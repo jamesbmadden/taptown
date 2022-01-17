@@ -38,27 +38,27 @@ let initiated = false;
 export async function init (gl: WebGLRenderingContext) {
 
   // load the roads
-  models[1] = await loadModel(gl, './models/Road-x.gltf');
-  models[2] = await loadModel(gl, './models/Road-right.gltf');
-  models[3] = await loadModel(gl, './models/Road-left.gltf');
-  models[4] = await loadModel(gl, './models/Road-y.gltf');
-  models[5] = await loadModel(gl, './models/Road-up.gltf');
-  models[6] = await loadModel(gl, './models/Road-down.gltf');
-  models[7] = await loadModel(gl, './models/Road-cross.gltf');
-  models[8] = await loadModel(gl, './models/Road-upleft.gltf');
-  models[9] = await loadModel(gl, './models/Road-leftdown.gltf');
-  models[10] = await loadModel(gl, './models/Road-downright.gltf');
-  models[11] = await loadModel(gl, './models/Road-rightup.gltf');
-  models[12] = await loadModel(gl, './models/Road-T.gltf');
-  models[13] = await loadModel(gl, './models/Road-l-.gltf');
-  models[14] = await loadModel(gl, './models/Road--l.gltf');
-  models[15] = await loadModel(gl, './models/Road-_l_.gltf');
-  models[16] = await loadModel(gl, './models/Road-single.gltf');
+  models[1] = await loadModel(gl, '/models/Road-x.gltf');
+  models[2] = await loadModel(gl, '/models/Road-right.gltf');
+  models[3] = await loadModel(gl, '/models/Road-left.gltf');
+  models[4] = await loadModel(gl, '/models/Road-y.gltf');
+  models[5] = await loadModel(gl, '/models/Road-up.gltf');
+  models[6] = await loadModel(gl, '/models/Road-down.gltf');
+  models[7] = await loadModel(gl, '/models/Road-cross.gltf');
+  models[8] = await loadModel(gl, '/models/Road-upleft.gltf');
+  models[9] = await loadModel(gl, '/models/Road-leftdown.gltf');
+  models[10] = await loadModel(gl, '/models/Road-downright.gltf');
+  models[11] = await loadModel(gl, '/models/Road-rightup.gltf');
+  models[12] = await loadModel(gl, '/models/Road-T.gltf');
+  models[13] = await loadModel(gl, '/models/Road-l-.gltf');
+  models[14] = await loadModel(gl, '/models/Road--l.gltf');
+  models[15] = await loadModel(gl, '/models/Road-_l_.gltf');
+  models[16] = await loadModel(gl, '/models/Road-single.gltf');
 
   // load out of bounds model
-  models[254] = await loadModel(gl, './models/outofbounds.gltf');
+  models[254] = await loadModel(gl, '/models/outofbounds.gltf');
   // load debug model
-  models[255] = await loadModel(gl, './models/Cafe.gltf');
+  models[255] = await loadModel(gl, '/models/Cafe.gltf');
 
 
   // tell the drawTile function we're good to go

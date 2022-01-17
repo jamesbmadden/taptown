@@ -1,6 +1,44 @@
 import loadModel, { Model } from './model';
 import { mat4 } from 'gl-matrix';
 
+// import URLs for all the models
+// @ts-ignore
+import roadX from './models/road-x.gltf?url';
+// @ts-ignore
+import roadRight from './models/road-right.gltf?url';
+// @ts-ignore
+import roadLeft from './models/road-left.gltf?url';
+// @ts-ignore
+import roadZ from './models/road-y.gltf?url';
+// @ts-ignore
+import roadUp from './models/road-up.gltf?url';
+// @ts-ignore
+import roadDown from './models/road-down.gltf?url';
+// @ts-ignore
+import roadCross from './models/road-cross.gltf?url';
+// @ts-ignore
+import roadUpLeft from './models/road-upleft.gltf?url';
+// @ts-ignore
+import roadLeftDown from './models/road-leftdown.gltf?url';
+// @ts-ignore
+import roadDownRight from './models/road-downright.gltf?url';
+// @ts-ignore
+import roadRightUp from './models/road-rightup.gltf?url';
+// @ts-ignore
+import roadT from './models/road-T.gltf?url';
+// @ts-ignore
+import roadTriRight from './models/road-l-.gltf?url';
+// @ts-ignore
+import roadTriLeft from './models/road--l.gltf?url';
+// @ts-ignore
+import roadTriUp from './models/road-_l_.gltf?url';
+// @ts-ignore
+import roadSingle from './models/road-single.gltf?url';
+// @ts-ignore
+import outOfBounds from './models/outofbounds.gltf?url';
+// @ts-ignore
+import debug from './models/Cafe.gltf?url';
+
 /**
  * Model array will be filled with each type of model
  * 0 = empty = null
@@ -38,27 +76,27 @@ let initiated = false;
 export async function init (gl: WebGLRenderingContext) {
 
   // load the roads
-  models[1] = await loadModel(gl, '/models/Road-x.gltf');
-  models[2] = await loadModel(gl, '/models/Road-right.gltf');
-  models[3] = await loadModel(gl, '/models/Road-left.gltf');
-  models[4] = await loadModel(gl, '/models/Road-y.gltf');
-  models[5] = await loadModel(gl, '/models/Road-up.gltf');
-  models[6] = await loadModel(gl, '/models/Road-down.gltf');
-  models[7] = await loadModel(gl, '/models/Road-cross.gltf');
-  models[8] = await loadModel(gl, '/models/Road-upleft.gltf');
-  models[9] = await loadModel(gl, '/models/Road-leftdown.gltf');
-  models[10] = await loadModel(gl, '/models/Road-downright.gltf');
-  models[11] = await loadModel(gl, '/models/Road-rightup.gltf');
-  models[12] = await loadModel(gl, '/models/Road-T.gltf');
-  models[13] = await loadModel(gl, '/models/Road-l-.gltf');
-  models[14] = await loadModel(gl, '/models/Road--l.gltf');
-  models[15] = await loadModel(gl, '/models/Road-_l_.gltf');
-  models[16] = await loadModel(gl, '/models/Road-single.gltf');
+  models[1] = await loadModel(gl, roadX);
+  models[2] = await loadModel(gl, roadRight);
+  models[3] = await loadModel(gl, roadLeft);
+  models[4] = await loadModel(gl, roadZ);
+  models[5] = await loadModel(gl, roadUp);
+  models[6] = await loadModel(gl, roadDown);
+  models[7] = await loadModel(gl, roadCross);
+  models[8] = await loadModel(gl, roadUpLeft);
+  models[9] = await loadModel(gl, roadLeftDown);
+  models[10] = await loadModel(gl, roadDownRight);
+  models[11] = await loadModel(gl, roadRightUp);
+  models[12] = await loadModel(gl, roadT);
+  models[13] = await loadModel(gl, roadTriRight);
+  models[14] = await loadModel(gl, roadTriLeft);
+  models[15] = await loadModel(gl, roadTriUp);
+  models[16] = await loadModel(gl, roadSingle);
 
   // load out of bounds model
-  models[254] = await loadModel(gl, '/models/outofbounds.gltf');
+  models[254] = await loadModel(gl, outOfBounds);
   // load debug model
-  models[255] = await loadModel(gl, '/models/Cafe.gltf');
+  models[255] = await loadModel(gl, debug);
 
 
   // tell the drawTile function we're good to go

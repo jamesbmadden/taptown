@@ -25,7 +25,8 @@ export default defineConfig(({ command, mode }) => {
         rollupOptions: {
           // set entry points
           input: {
-            app: resolve(__dirname, 'app/index.html')
+            app: resolve(__dirname, 'app/index.html'),
+            landing: resolve(__dirname, 'index.html')
           }
         }
       }

@@ -1,9 +1,28 @@
 body {
   background: #64a666;
+  overflow-x: hidden;
 }
 img {
   display: block;
   width: 75%;
   max-width: 386px;
   margin: auto;
+  margin-top: 4rem;
+}
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+@media (orientation: landscape) {
+  .bg-video {
+    width: 100%;
+  }
+}
+@media (orientation: portrait) {
+  .bg-video {
+    height: 100%;
+  }
 }

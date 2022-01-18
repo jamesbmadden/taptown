@@ -54,7 +54,7 @@ async function main () {
     const emptySave: GameSave = {
 
       lastSaved: Date.now(),
-      map: new Uint8Array()
+      map: new Uint8Array([255]) // default game is 1x1 and just the debug tile
 
     }
 

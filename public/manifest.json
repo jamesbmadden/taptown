@@ -2,7 +2,7 @@
   "name": "TapTown!",
   "short_name": "TapTown!",
   "start_url": "/taptown/?pwa=true",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#64a666",
   "theme_color": "#64a666",
   "description": "A simple, Sim City-inspired game, built using WebGL.",

@@ -113,7 +113,8 @@ async function init () {
     location.replace('../');
   }
   // otherwise we have the save! Use it to load
-
+  // set the document title to the save name
+  document.title = `🏠 ${saveId} • TapTown!`;
   console.log(save);
 
   // set up workers

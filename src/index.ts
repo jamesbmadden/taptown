@@ -2,6 +2,8 @@
  * code for the LANDING page (/). Load, create, manage saves before sending user into game
  */
 import { openDB, deleteDB } from 'idb';
+import '@pwabuilder/pwainstall';
+
 import loadDb, { getSavesList, GameSave } from './db';
 
 // get references to elements

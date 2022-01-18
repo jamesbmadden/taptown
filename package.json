@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jamesbmadden/taptown#readme",
   "dependencies": {
+    "@pwabuilder/pwainstall": "^1.6.7",
     "comlink": "^4.3.1",
     "gl-matrix": "^3.4.3",
     "idb": "^7.0.0"

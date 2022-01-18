@@ -2,6 +2,7 @@
  * code for the LANDING page (/). Load, create, manage saves before sending user into game
  */
 import { openDB, deleteDB } from 'idb';
+import loadDb, { getSavesList } from './db';
 
 // here's the database structure
 interface GameSave {
@@ -24,25 +25,10 @@ main();
 async function main () {
 
   // open a database. If one doesn't exist, create it.
-  const db = await openDB('taptown', 1, {
-
-    // the database needs to be created or upgraded.
-    upgrade (db, oldVersion, newVersion, transaction) {
-
-      // if oldVersion = 0, database is empty and should be established
-      if (oldVersion === 0) { 
-        // so lets create the saves object store
-        db.createObjectStore('saves');
-
-      }
-
-    }
-
-  });
+  const db = await loadDb();
 
   // get list of saves to add to saves list
-  const saves = db.transaction('saves', 'readonly').objectStore('saves');
-  updateSavesList(await saves.getAllKeys());
+  updateSavesList(await getSavesList(db));
 
   // when add button is clicked, add new save to indexedDB
   addButton.addEventListener('click', async () => {
@@ -65,7 +51,7 @@ async function main () {
 
     console.log(key, 'save added');
 
-    updateSavesList(await saves.getAllKeys());
+    updateSavesList(await getSavesList(db));
 
 
   });

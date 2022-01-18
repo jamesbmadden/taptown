@@ -34,6 +34,8 @@ let buildingsPerRow = 2 * (innerWidth / 200);
 let buildingsPerColumn = 2 * (innerHeight / 200);
 // map of the world - which buildings go where, etc
 let map: Uint16Array;
+// the size of the map (how many buildings per row/column)
+let mapSize: number;
 // x and z position, which will be changed by either swiping or clicking and dragging
 let camera = new Camera();
 
@@ -127,6 +129,7 @@ async function init () {
   // establish a callback so that any changes to buildings will update the map array
   await buildings.setCallback(Comlink.proxy(newMap => {
     map = newMap;
+    mapSize = Math.sqrt(map.length); // maps are square, so this should work?
   }));
   people = await new People();
   // establish a callback so that updates to values will appear in UI
@@ -230,8 +233,6 @@ function render (programInfo) {
   //                 zNear,
   //                 zFar);
 
-  const TILES_PER_ROW = 20; // this is a temp number it will probably expand later
-
   const startX = Math.floor(camera.x / 2) - 1;
   const startZ = Math.floor(camera.z / 2) - 5;
 
@@ -239,7 +240,7 @@ function render (programInfo) {
   for (let z = startZ; z < startZ + buildingsPerColumn * 2; z++) {
     // for each row
     // get the start index in the list
-    let startIndex = z * 20;
+    let startIndex = z * mapSize;
 
     // now go through each column and draw the tile
     for (let x = startX; x < startX + buildingsPerRow * 2; x ++) {
@@ -247,7 +248,7 @@ function render (programInfo) {
       let i = startIndex + x;
 
       // if out of bounds, do not take from another row, just render an out of bounds tile
-      if (!(x >= TILES_PER_ROW) && !(x < 0) && !(z < 0) && !(z >= TILES_PER_ROW)) {
+      if (!(x >= mapSize) && !(x < 0) && !(z < 0) && !(z >= mapSize)) {
 
         drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
 

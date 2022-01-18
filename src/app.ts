@@ -89,6 +89,16 @@ init();
 // initate everything before running the game loop
 async function init () {
 
+  // Before setting up workers, data must be loaded. Check to see if save ID was provided
+  const searchParams = new URLSearchParams(location.search);
+  const saveId = searchParams.get('save');
+
+  // if no save ID provided, alert and redirect to landing page
+  if (!saveId) {
+    alert('Save missing or not provided.');
+    location.replace('../');
+  }
+
   // set up workers
   const Ambient: any = Comlink.wrap(new _Ambient());
   Ambient.log();

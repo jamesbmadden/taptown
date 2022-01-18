@@ -3,6 +3,15 @@
  */
 import { openDB, deleteDB, IDBPDatabase } from 'idb';
 
+// here's the database structure
+export interface GameSave {
+
+  lastSaved: number,
+
+  map: Uint8Array
+
+}
+
 /**
  * Grab the database
  */

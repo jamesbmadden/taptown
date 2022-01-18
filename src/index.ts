@@ -2,16 +2,7 @@
  * code for the LANDING page (/). Load, create, manage saves before sending user into game
  */
 import { openDB, deleteDB } from 'idb';
-import loadDb, { getSavesList } from './db';
-
-// here's the database structure
-interface GameSave {
-
-  lastSaved: number,
-
-  map: Uint8Array
-
-}
+import loadDb, { getSavesList, GameSave } from './db';
 
 // get references to elements
 const savesListElement = document.querySelector('.game-saves');

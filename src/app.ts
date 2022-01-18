@@ -13,6 +13,8 @@ import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
 import { updateUIFromProperties } from './ui';
 
+import loadDb, { getSave, GameSave } from './db';
+
 // load workers
 // @ts-expect-error
 import _Ambient from './workers/ambient?worker';
@@ -95,9 +97,22 @@ async function init () {
 
   // if no save ID provided, alert and redirect to landing page
   if (!saveId) {
-    alert('Save missing or not provided.');
+    alert('Save not provided.');
     location.replace('../');
   }
+
+  // read the database and grab the save
+  const db = await loadDb();
+  const save = await getSave(db, saveId);
+
+  // if save is null then error
+  if (!save) {
+    alert('Save couldn\'t be loaded.');
+    location.replace('../');
+  }
+  // otherwise we have the save! Use it to load
+
+  console.log(save);
 
   // set up workers
   const Ambient: any = Comlink.wrap(new _Ambient());

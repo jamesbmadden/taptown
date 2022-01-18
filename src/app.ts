@@ -123,7 +123,7 @@ async function init () {
   People.log();
 
   ambient = await new Ambient();
-  buildings = await new Buildings();
+  buildings = await new Buildings(save.map);
   // establish a callback so that any changes to buildings will update the map array
   await buildings.setCallback(Comlink.proxy(newMap => {
     map = newMap;

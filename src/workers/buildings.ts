@@ -34,17 +34,11 @@ class Buildings {
   /**
    * Build the correct map size
    */
-  constructor () {
+  constructor (map: Uint8Array) {
 
-    const map = [];
+    this.map = map;
 
-    for (let i = 0; i < WORLD_SIZE * WORLD_SIZE; i++) {
-      map.push(255);
-    }
-
-    this.map = new Uint8Array(map);
-
-    this.drawRoads();
+    // this.drawRoads();
 
   }
 

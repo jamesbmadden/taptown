@@ -233,16 +233,4 @@ function render (programInfo) {
 
   }
 
-  // run a loop to draw each tile
-  /*for (let i = 0; i < tilesToDraw; i++) {
-
-    // get the coordinates
-    let x = i % 20; // THIS WILL CHANGE WHEN RENDERING BECOMES ONLY THE SUBSECTION OF MAP VISIBLE
-    let z = Math.floor(i / 20); // SAME AS ABOVE
-
-    // drawTile will adjust positioning based on the x/y provided :)
-    drawTile(gl, map[i], [x, z], programInfo, projectionMatrix, camera.cameraMatrix);
-
-  }*/
-
 }

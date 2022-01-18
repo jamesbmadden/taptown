@@ -2,7 +2,7 @@
  * Code for the APP page (/app/), where the game actually runs.
  */
 
-import './styles.css';
+import './app.css';
 import * as Comlink from 'comlink';
 import { mat4, vec2 } from 'gl-matrix';
 

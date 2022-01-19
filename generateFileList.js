@@ -45,7 +45,7 @@ const fileListFormatted = fileList.map(file => `'${file}'`);
 const now = new Date(Date.now());
 
 // NOW, write this to dist/filesToCache.js
-const filesToCacheContent = `// This is the production version of this file.\nvar appVer = 'taptown-${now.getFullYear()}.${now.getMonth()}.${now.getDate()}.${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}';\nvar filesToCache = [ ${fileListFormatted.join(',')} ];`;
+const filesToCacheContent = `// This is the production version of this file.\nvar appVer = '${now.getFullYear()}.${now.getMonth()}.${now.getDate()}.${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}';\nvar filesToCache = [ ${fileListFormatted.join(',')} ];`;
 
 // finally, write it out
 fs.writeFileSync(`${__dirname}/dist/filesToCache.js`, filesToCacheContent);

@@ -1,3 +1,6 @@
+// get the list of files to be put into cache on activation
+importScripts('./filesToCache.js');
+
 /**
  * Upon fetch, respond with fromNetwork
  */

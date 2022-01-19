@@ -1,12 +1,22 @@
 // get the list of files to be put into cache on activation
 importScripts('./filesToCache.js');
 
+// the name to use for the cache
+const cacheId = `tt-${appVer}`;
+
 /**
- * when the service worker is activated, trim the cache to only the files that are needed for this build
+ * when the service worker is activated, delete any older caches that do not reflect this build number (appVer from filesToCache)
+ * and cache all required files
  */
 self.addEventListener('activate', async (event) => {
 
-  // the part to trim from the start of filepaths
+  // loop through each cache and delete any that don't match the current version
+  // use promise all to make it concurrent
+  await Promise.all((await caches.keys()).map(cacheName => {
+    if (cacheName !== cacheId) return caches.delete(cacheName);
+  }));
+
+  /*// the part to trim from the start of filepaths
   // the slash at the end should be kept
   const urlBase = location.toString().slice(0, location.toString().length - 6);
 
@@ -21,7 +31,7 @@ self.addEventListener('activate', async (event) => {
     if (!filesToCache.includes(fileName)) cache.delete(file);
     
 
-  });
+  });*/
 
 });
 
@@ -49,7 +59,7 @@ async function fromNetwork(request) {
     if (response.status < 400) {
 
       // open the cache
-      const cache = await caches.open('taptown');
+      const cache = await caches.open(cacheId);
       // and put the response and request in
       cache.put(request, response.clone());
 
@@ -62,7 +72,7 @@ async function fromNetwork(request) {
     }
   } catch (error) {
     // something went wrong with the network, so lets try the cache to see if that helps
-    const cache = await caches.open('taptown');
+    const cache = await caches.open(cacheId);
     // return the request from cache :)
     return await cache.match(request);
   }

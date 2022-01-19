@@ -2,6 +2,30 @@
 importScripts('./filesToCache.js');
 
 /**
+ * when the service worker is activated, trim the cache to only the files that are needed for this build
+ */
+self.addEventListener('activate', async (event) => {
+
+  // the part to trim from the start of filepaths
+  // the slash at the end should be kept
+  const urlBase = location.toString().slice(0, location.toString().length - 6);
+
+  // open the cache
+  const cache = await caches.open('taptown');
+  (await cache.keys()).forEach(file => {
+
+    // just get the section of the filename we want
+    const fileName = file.url.slice(urlBase.length, file.url.length);
+
+    // if the list of files to keep doesn't include this file, DELETE IT
+    if (!filesToCache.includes(fileName)) cache.delete(file);
+    
+
+  });
+
+});
+
+/**
  * Upon fetch, respond with fromNetwork
  */
 self.addEventListener('fetch', event => {

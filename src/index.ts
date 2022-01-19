@@ -1,7 +1,6 @@
 /**
  * code for the LANDING page (/). Load, create, manage saves before sending user into game
  */
-import { openDB, deleteDB } from 'idb';
 import '@pwabuilder/pwainstall';
 
 import loadDb, { getSavesList, GameSave } from './db';
@@ -11,6 +10,12 @@ const savesListElement = document.querySelector('.game-saves');
 const addButton = document.querySelector('.add-save');
 // @ts-expect-error
 const newSaveInput: HTMLInputElement = document.getElementById('new-save-name');
+
+// determine whether we are running in PWA mode?
+const isPwa = (new URLSearchParams(location.search)).get('pwa');
+// if it's in PWA mode, disable the install button
+// @ts-ignore
+if (isPwa === 'true') document.querySelector('.pwa-button').hidden = true;
 
 main();
 

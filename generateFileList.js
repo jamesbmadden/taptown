@@ -41,8 +41,11 @@ fileList.push('/', '/app/', '/index.html');
 // put quotes around the file list
 const fileListFormatted = fileList.map(file => `'${file}'`);
 
+// get the current time to use as the app version
+const now = new Date(Date.now());
+
 // NOW, write this to dist/filesToCache.js
-const filesToCacheContent = `// This is the production version of this file.\nvar filesToCache = [ ${fileListFormatted.join(',')} ];`;
+const filesToCacheContent = `// This is the production version of this file.\nvar appVer = 'taptown-${now.getFullYear()}.${now.getMonth()}.${now.getDate()}.${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}';\nvar filesToCache = [ ${fileListFormatted.join(',')} ];`;
 
 // finally, write it out
 fs.writeFileSync(`${__dirname}/dist/filesToCache.js`, filesToCacheContent);

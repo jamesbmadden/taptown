@@ -19,7 +19,7 @@
 
     <!-- Register the Service Worker -->
     <script>
-      if ('serviceWorker' in navigator) {
+      if ('serviceWorker' in navigator && !/localhost/.test(window.location)) {
 
         // register service worker :)
         navigator.serviceWorker.register('./sw.js').then(registration => {

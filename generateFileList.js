@@ -33,7 +33,10 @@ function readFolder (dir, url, pushThisLevel) {
 }
 
 // read from the "dist" dir
-readFolder(`${__dirname}/dist`, '', false)
+readFolder(`${__dirname}/dist`, '', false);
+
+// add index.html and / and /app/ to cacheList
+fileList.push('/', '/app/', '/index.html');
 
 // put quotes around the file list
 const fileListFormatted = fileList.map(file => `'${file}'`);

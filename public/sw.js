@@ -32,9 +32,32 @@ self.addEventListener('activate', async (event) => {
 self.addEventListener('fetch', event => {
   
   // return fromNetwork stuff
-  event.respondWith(fromNetwork(event.request));
+  event.respondWith(fromCache(event.request));
 
 });
+
+/**
+ * SW IMPLEMENTATION #2: CACHE-FIRST
+ * Gets data from cache first, then falls back to network otherwise.
+ */
+async function fromCache(request) {
+
+  // read from the cache
+  const cache = await caches.open(cacheId);
+  // and open the specific file
+  const response = cache.match(request.clone());
+
+  // check if the cache worked
+  if (response) {
+    // great! return the response
+    return response;
+  } else {
+    // okay, get it from network
+    return await fetch(request);
+  }
+
+
+}
 
 /** 
  * SW IMPLEMENTATION #1: NETWORK-FIRST

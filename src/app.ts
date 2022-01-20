@@ -43,8 +43,8 @@ let camera = new Camera();
 // @ts-expect-error
 window.camera = camera;
 
-canvas.width = innerWidth;
-canvas.height = innerHeight;
+canvas.width = innerWidth * devicePixelRatio;
+canvas.height = innerHeight * devicePixelRatio;
 // make sure camera knows how to adjust between device pixels and WebGL tiles
 let ratioX = innerWidth / buildingsPerRow;
 let ratioY = innerHeight / buildingsPerColumn; // calculate buildings per column
@@ -54,8 +54,8 @@ const gl = canvas.getContext('webgl');
 
 // make sure the canvas always matches the window resolution
 window.addEventListener('resize', () => {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+  canvas.width = innerWidth * devicePixelRatio;
+  canvas.height = innerHeight * devicePixelRatio;
   buildingsPerRow = 2 * (innerWidth / 200);
   buildingsPerColumn = 2 * (innerHeight / 200);
   // make sure camera knows how to adjust between device pixels and WebGL tiles

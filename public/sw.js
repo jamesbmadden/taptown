@@ -11,16 +11,21 @@ const cacheId = `tt-${appVer}`;
  */
 self.addEventListener('activate', async (event) => {
 
-  // loop through each cache and delete any that don't match the current version
-  // use promise all to make it concurrent
-  await Promise.all((await caches.keys()).map(cacheName => {
-    if (cacheName !== cacheId) return caches.delete(cacheName);
-  }));
+  // make sure event stays open until all caching is done
+  event.waitUntil(async () => {
 
-  // open the cache for the current version
-  const cache = await caches.open(cacheId);
-  // add ALL the required files to cache, that way everything is downloaded and can be served from cache
-  cache.addAll(filesToCache);
+    // loop through each cache and delete any that don't match the current version
+    // use promise all to make it concurrent
+    await Promise.all((await caches.keys()).map(cacheName => {
+      if (cacheName !== cacheId) return caches.delete(cacheName);
+    }));
+
+    // open the cache for the current version
+    const cache = await caches.open(cacheId);
+    // add ALL the required files to cache, that way everything is downloaded and can be served from cache
+    await cache.addAll(filesToCache);
+
+  });
 
 });
 

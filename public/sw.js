@@ -45,7 +45,7 @@ async function fromCache(request) {
   // read from the cache
   const cache = await caches.open(cacheId);
   // and open the specific file
-  const response = cache.match(request.clone());
+  const response = await cache.match(request.clone());
 
   // check if the cache worked
   if (response) {
@@ -53,7 +53,7 @@ async function fromCache(request) {
     return response;
   } else {
     // okay, get it from network
-    return await fromNetwork(request);
+    return await fetch(request);
   }
 
 

@@ -50,12 +50,16 @@ let ratioX = innerWidth / buildingsPerRow;
 let ratioY = innerHeight / buildingsPerColumn; // calculate buildings per column
 camera.setPixelToTileRatio(ratioX, ratioY);
 
-const gl = canvas.getContext('webgl');
+let gl = canvas.getContext('webgl');
 
 // make sure the canvas always matches the window resolution
 window.addEventListener('resize', () => {
+  // scale the canvas
   canvas.width = innerWidth * devicePixelRatio;
   canvas.height = innerHeight * devicePixelRatio;
+  // now make a gl respect this new scale
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  // and adjust constants
   buildingsPerRow = 2 * (innerWidth / 200);
   buildingsPerColumn = 2 * (innerHeight / 200);
   // make sure camera knows how to adjust between device pixels and WebGL tiles

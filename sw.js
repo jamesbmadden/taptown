@@ -1,5 +1,6 @@
-// get the list of files to be put into cache on activation
-importScripts('./filesToCache.js');
+// These lines will be replaced on build.
+var appVer = -1;
+var filesToCache = [];
 
 // the name to use for the cache
 const cacheId = `tt-${appVer}`;

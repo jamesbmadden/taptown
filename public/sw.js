@@ -53,7 +53,7 @@ async function fromCache(request) {
     return response;
   } else {
     // okay, get it from network
-    return await fetch(request);
+    return await fromNetwork(request);
   }
 
 

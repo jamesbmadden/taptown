@@ -46,11 +46,11 @@ async function fromCache(request) {
   // read from the cache
   const cache = await caches.open(cacheId);
   // and open the specific file
-  const cacheRequest = request.clone();
   // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
-  const cacherequestUrl = cacheRequest.url.split('?')[0];
-  console.log(cacheRequestUrl);
-  const response = await cache.match(cacheRequestUrl);
+  // so basically make a new request using the new URL but the data from the last one
+  const cacheRequest = new Request(request.url.split('?')[0], request);
+  console.log(cacheRequest.url);
+  const response = await cache.match(cacheRequest);
 
   // check if the cache worked
   if (response) {

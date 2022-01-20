@@ -17,22 +17,10 @@ self.addEventListener('activate', async (event) => {
     if (cacheName !== cacheId) return caches.delete(cacheName);
   }));
 
-  /*// the part to trim from the start of filepaths
-  // the slash at the end should be kept
-  const urlBase = location.toString().slice(0, location.toString().length - 6);
-
-  // open the cache
-  const cache = await caches.open('taptown');
-  (await cache.keys()).forEach(file => {
-
-    // just get the section of the filename we want
-    const fileName = file.url.slice(urlBase.length, file.url.length);
-
-    // if the list of files to keep doesn't include this file, DELETE IT
-    if (!filesToCache.includes(fileName)) cache.delete(file);
-    
-
-  });*/
+  // open the cache for the current version
+  const cache = await caches.open(cacheId);
+  // add ALL the required files to cache, that way everything is downloaded and can be served from cache
+  cache.addAll(filesToCache);
 
 });
 

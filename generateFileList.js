@@ -24,6 +24,8 @@ function readFolder (dir, url, pushThisLevel) {
       readFolder(`${dir}/${filePath}`, `${url}/${filePath}`, true);
 
     } 
+    // if the file is /img/bg.mp4, DON'T add it to the list because it won't work
+    else if (filePath === 'bg.mp4') console.log('ignoring bg.mp4');
     // otherwise, IF we are pushing files on this level, add it to the list
     else if (pushThisLevel) fileList.push(`${url}/${filePath}`);
 

@@ -48,9 +48,9 @@ async function fromCache(request) {
   // and open the specific file
   const cacheRequest = request.clone();
   // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
-  cacheRequest.url = cacheRequest.url.split('?')[0];
-  console.log(cacheRequest.url);
-  const response = await cache.match(cacheRequest);
+  const cacherequestUrl = cacheRequest.url.split('?')[0];
+  console.log(cacheRequestUrl);
+  const response = await cache.match(cacheRequestUrl);
 
   // check if the cache worked
   if (response) {

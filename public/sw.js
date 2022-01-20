@@ -19,8 +19,10 @@ self.addEventListener('activate', async (event) => {
 
   // open the cache for the current version
   const cache = await caches.open(cacheId);
+  // add a period in front of urls to make sure service worker is looking in the right place
+  const filesUrls = filesToCache.map(file => `.${file}`);
   // add ALL the required files to cache, that way everything is downloaded and can be served from cache
-  await cache.addAll(filesToCache);
+  await cache.addAll(filesUrls);
 
 });
 

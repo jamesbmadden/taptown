@@ -49,7 +49,7 @@ async function fromCache(request) {
   const cacheRequest = request.clone();
   // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
   cacheRequest.url = cacheRequest.url.split('?')[0];
-  console.log(cacheRequest);
+  console.log(cacheRequest.url);
   const response = await cache.match(cacheRequest);
 
   // check if the cache worked

@@ -39,13 +39,17 @@ self.addEventListener('fetch', event => {
 /**
  * SW IMPLEMENTATION #2: CACHE-FIRST
  * Gets data from cache first, then falls back to network otherwise.
+ * @param {Request} request
  */
 async function fromCache(request) {
 
   // read from the cache
   const cache = await caches.open(cacheId);
   // and open the specific file
-  const response = await cache.match(request.clone());
+  const cacheRequest = request.clone();
+  // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
+  cacheRequest.url = cacheRequest.url.split('?')[0];
+  const response = await cache.match(cacheRequest);
 
   // check if the cache worked
   if (response) {
@@ -62,6 +66,7 @@ async function fromCache(request) {
 /** 
  * SW IMPLEMENTATION #1: NETWORK-FIRST
  * Gets data from network first, and falls back to cache otherwise.
+ * @param {Request} request
  */
 async function fromNetwork(request) {
 

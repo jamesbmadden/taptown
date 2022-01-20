@@ -48,12 +48,13 @@ const now = new Date(Date.now());
 const appVerLine = `var appVer = '${now.getFullYear()}.${now.getMonth()}.${now.getDate()}.${now.getHours()}.${now.getMinutes()}.${now.getSeconds()}';`;
 const filesToCacheLine = `var filesToCache = [ ${fileListFormatted.join(',')} ];`;
 
-// finally, open the file, replace the lines, and write out
-const swFile = fs.readFileSync(`${__dirname}/dist/sw.js`, { encoding: 'utf-8' });
+// finally, open the file, split it into lines, write to them, then output
+const swFile = fs.readFileSync(`${__dirname}/dist/sw.js`, { encoding: 'utf-8' }).split('\n');
 
-// replace the placeholder lines with the build lines
-swFile.replace('var appVer = -1;', appVerLine);
-swFile.replace('var filesToCache = [];', filesToCacheLine);
+// set the lines
+swFile[0] = `// this is the production version of this file :)\n// appVer is specific to THIS BUILD only and is used to manage caching.\n// Files to cache is a list of the file names actually used in this version.`;
+swFile[1] = appVerLine;
+swFile[2] = filesToCacheLine;
 
 // write the final file :)
-fs.writeFileSync(`${__dirname}/dist/sw.js`, swFile);
+fs.writeFileSync(`${__dirname}/dist/sw.js`, swFile.join('\n'));

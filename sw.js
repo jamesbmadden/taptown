@@ -1,7 +1,7 @@
 // this is the production version of this file :)
 // appVer is specific to THIS BUILD only and is used to manage caching.
 // Files to cache is a list of the file names actually used in this version.
-var appVer = '2022.0.20.2.13.51';
+var appVer = '2022.0.20.2.47.42';
 var filesToCache = [ '/app/index.html','/assets/Cafe.89231c7b.gltf','/assets/Road--l.cec3388c.gltf','/assets/Road-T.dd27be2f.gltf','/assets/Road-_l_.04dac8e2.gltf','/assets/Road-cross.c0149426.gltf','/assets/Road-down.3aa34828.gltf','/assets/Road-downright.2ee19715.gltf','/assets/Road-l-.8fa437e2.gltf','/assets/Road-left.e4d57c46.gltf','/assets/Road-leftdown.43e4587d.gltf','/assets/Road-right.05535041.gltf','/assets/Road-rightup.f9b3a2d6.gltf','/assets/Road-single.f2299542.gltf','/assets/Road-up.f33fbfbe.gltf','/assets/Road-upleft.8e8e8992.gltf','/assets/Road-x.25087994.gltf','/assets/Road-y.43b84893.gltf','/assets/ambient.6d469442.js','/assets/app.094664c2.css','/assets/app.79957490.js','/assets/buildings.a58a3922.js','/assets/db.ba7b3be2.js','/assets/landing.11d65904.css','/assets/landing.b6f501f9.js','/assets/outofbounds.54610d6d.gltf','/assets/people.9ab39b39.js','/assets/vendor.4f190134.js','/img/icons/logo-128.png','/img/icons/logo-192.png','/img/icons/logo-256.png','/img/icons/logo-32.png','/img/icons/logo-512.png','/img/icons/logo-64.png','/img/icons/logo-square-128.png','/img/icons/logo-square-192.png','/img/icons/logo-square-256.png','/img/icons/logo-square-32.png','/img/icons/logo-square-512.png','/img/icons/logo-square-64.png','/img/logo.png','/','/app/','/index.html' ];
 
 // the name to use for the cache
@@ -41,13 +41,17 @@ self.addEventListener('fetch', event => {
 /**
  * SW IMPLEMENTATION #2: CACHE-FIRST
  * Gets data from cache first, then falls back to network otherwise.
+ * @param {Request} request
  */
 async function fromCache(request) {
 
   // read from the cache
   const cache = await caches.open(cacheId);
   // and open the specific file
-  const response = await cache.match(request.clone());
+  const cacheRequest = request.clone();
+  // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
+  cacheRequest.url = cacheRequest.url.split('?')[0];
+  const response = await cache.match(cacheRequest);
 
   // check if the cache worked
   if (response) {
@@ -64,6 +68,7 @@ async function fromCache(request) {
 /** 
  * SW IMPLEMENTATION #1: NETWORK-FIRST
  * Gets data from network first, and falls back to cache otherwise.
+ * @param {Request} request
  */
 async function fromNetwork(request) {
 

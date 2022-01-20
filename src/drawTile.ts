@@ -3,6 +3,8 @@ import { mat4 } from 'gl-matrix';
 
 // import URLs for all the models
 // @ts-ignore
+import empty from './models/Empty.gltf?url';
+// @ts-ignore
 import roadX from './models/Road-x.gltf?url';
 // @ts-ignore
 import roadRight from './models/Road-right.gltf?url';
@@ -75,6 +77,8 @@ let initiated = false;
  */
 export async function init (gl: WebGLRenderingContext) {
 
+  // load blank space
+  models[0] = await loadModel(gl, empty);
   // load the roads
   models[1] = await loadModel(gl, roadX);
   models[2] = await loadModel(gl, roadRight);

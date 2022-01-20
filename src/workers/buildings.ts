@@ -1,8 +1,8 @@
 import * as Comlink from "comlink";
 
-const WORLD_SIZE = 20;
-
 class Buildings {
+
+  mapSize: number;
 
 
   _roads = [
@@ -38,20 +38,37 @@ class Buildings {
 
     this.map = map;
 
+    // get the proper size of the world
+    this.mapSize = Math.sqrt(map.length);
+
     // this.drawRoads();
+
+  }
+
+  /**
+   * Change a tile type and trigger an update on the main thread
+   */
+  setTile (x, z, type) {
+
+    // get the coordinate in the map
+    const mapId = z * this.mapSize + x;
+    this.map[mapId] = type;
+
+    // now trigger an update on the main thread
+    this._cb(this.map);
 
   }
 
   /**
    * Take road map and convert it to correct tile types
    */
-  drawRoads () {
+  _drawRoads () {
 
     // loop over every row in this._roads
-    for (let y = 0; y < WORLD_SIZE; y++) {
+    for (let y = 0; y < this.mapSize; y++) {
 
       // loop over every tile in the row
-      for (let x = 0; x < WORLD_SIZE; x++) {
+      for (let x = 0; x < this.mapSize; x++) {
 
         const tile = this._roads[y][x];
         // if true, tile is road
@@ -107,7 +124,7 @@ class Buildings {
 
           // now we can give that to the map
           // find the space in the map to use
-          let mapId = y * WORLD_SIZE + x;
+          let mapId = y * this.mapSize + x;
           this.map[mapId] = roadNum;
         }
 

@@ -119,7 +119,7 @@ export default class Camera {
   /**
    * given a TILE coordinate, zoom in and focus on that building
    */
-  enterFocus ([buildingX, buildingY]: vec2) {
+  enterFocus ([buildingX, buildingZ]: vec2) {
 
     // set focus mode to true
     this._inFocusMode = true;
@@ -134,9 +134,8 @@ export default class Camera {
       if (progress > 1) progress = 1;
       // now weighted average the two angles to see what angle to use
       // formula: INITIAL * 1 - progress + FINAL * progress;
-      const angle = 45 * (1 - progress) + 15 * progress;
       const translateX = -this.x * (1 - progress) + (-buildingX * 2) * progress;
-      const translateZ = -this.z * (1 - progress) + (-buildingX * 2) * progress;
+      const translateZ = -this.z * (1 - progress) + (-buildingZ * 2) * progress;
       const scaleFactor = 1 + progress;
 
       // now create the matrix
@@ -150,12 +149,13 @@ export default class Camera {
       // turn camera to isometric angle
       mat4.rotateX(this.cameraMatrix,
         this.cameraMatrix,
-        angle * Math.PI / 180
+        45 * Math.PI / 180
       );
       mat4.rotateY(this.cameraMatrix,
         this.cameraMatrix,
-        angle * Math.PI / 180
+        45 * Math.PI / 180
       );
+      // scale the world
       mat4.scale(this.cameraMatrix, this.cameraMatrix, [scaleFactor, scaleFactor, scaleFactor]);
       // and move it into position
       mat4.translate(this.cameraMatrix, this.cameraMatrix, [translateX, 0, translateZ]);

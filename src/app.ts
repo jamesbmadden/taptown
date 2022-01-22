@@ -92,6 +92,8 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   // now update the tile on the map
   const mapCoord = gameCoords[1] * mapSize + gameCoords[0];
   buildings.setTile(gameCoords[0], gameCoords[1], map[mapCoord] + 1);
+
+  camera.enterFocus(gameCoords);
 });
 
 init();

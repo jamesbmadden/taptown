@@ -134,9 +134,9 @@ export default class Camera {
       if (progress > 1) progress = 1;
       // now weighted average the two angles to see what angle to use
       // formula: INITIAL * 1 - progress + FINAL * progress;
-      const translateX = -this.x * (1 - progress) + (-buildingX * 2) * progress;
-      const translateZ = -this.z * (1 - progress) + (-buildingZ * 2) * progress;
-      const scaleFactor = 1 + progress;
+      const translateX = -this.x * (1 - progress) + ((-buildingX * 2) + (innerWidth / 200)) * progress;
+      const translateZ = -this.z * (1 - progress) + ((-buildingZ * 2) + (innerHeight / 200)) * progress;
+      const scaleFactor = 1// + progress;
 
       // now create the matrix
       // create camera matrix for the building

@@ -38,6 +38,8 @@ let map: Uint16Array;
 let mapSize: number;
 // x and z position, which will be changed by either swiping or clicking and dragging
 let camera = new Camera();
+// the coordinate mouse is hovering over (default to smth way out of the way)
+let mouseCoords = [-100, -100];
 
 // provide the camera object on window for easier debugging
 // @ts-expect-error
@@ -68,8 +70,8 @@ window.addEventListener('resize', () => {
   camera.setPixelToTileRatio(ratioX, ratioY);
 });
 
-// when the canvas is clicked, find the in-game coords of the location
-canvas.addEventListener('click', (event: MouseEvent) => {
+// on mouse move get tile currently highlighted
+canvas.addEventListener('mousemove', (event: MouseEvent) => {
 
   // first, get it based on the X/Y position, THEN change perspective
   // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
@@ -88,10 +90,18 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   // floor the result 
   vec2.floor(gameCoords, gameCoords);
   // and that's the coordinates! Yay!
+  mouseCoords = gameCoords;
+
+  console.log(mouseCoords);
+
+});
+
+// when the canvas is clicked, find the in-game coords of the location
+canvas.addEventListener('click', (event: MouseEvent) => {
 
   // now update the tile on the map
-  const mapCoord = gameCoords[1] * mapSize + gameCoords[0];
-  buildings.setTile(gameCoords[0], gameCoords[1], map[mapCoord] + 1);
+  const mapCoord = mouseCoords[1] * mapSize + mouseCoords[0];
+  buildings.setTile(mouseCoords[0], mouseCoords[1], map[mapCoord] + 1);
 
   //camera.enterFocus(gameCoords);
 });

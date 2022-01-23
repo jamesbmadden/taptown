@@ -13,8 +13,6 @@ import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
 import { updateUIFromProperties } from './ui';
 
-import loadDb, { getSave, GameSave } from './db';
-
 // load workers
 // @ts-expect-error
 import _Ambient from './workers/ambient?worker';
@@ -111,6 +109,27 @@ init();
 // initate everything before running the game loop
 async function init () {
 
+  // set up workers
+  const Ambient: any = Comlink.wrap(new _Ambient());
+  Ambient.log();
+  const Buildings: any = Comlink.wrap(new _Buildings());
+  Buildings.log();
+  const People: any = Comlink.wrap(new _People());
+  People.log();
+
+  ambient = await new Ambient();
+  buildings = await new Buildings();
+  // establish a callback so that any changes to buildings will update the map array
+  await buildings.setCallback(Comlink.proxy(newMap => {
+    map = newMap;
+    mapSize = Math.sqrt(map.length); // maps are square, so this should work?
+  }));
+  people = await new People();
+  // establish a callback so that updates to values will appear in UI
+  await people.setCallback(Comlink.proxy(properties => {
+    updateUIFromProperties(properties);
+  }));
+
   // Before setting up workers, data must be loaded. Check to see if save ID was provided
   const searchParams = new URLSearchParams(location.search);
   const saveId = searchParams.get('save');
@@ -122,8 +141,7 @@ async function init () {
   }
 
   // read the database and grab the save
-  const db = await loadDb();
-  const save = await getSave(db, saveId);
+  const save = await buildings.loadSave(saveId);
 
   // if save is null then error
   if (!save) {
@@ -134,27 +152,6 @@ async function init () {
   // set the document title to the save name
   document.title = `🏠 ${saveId} • TapTown!`;
   console.log(save);
-
-  // set up workers
-  const Ambient: any = Comlink.wrap(new _Ambient());
-  Ambient.log();
-  const Buildings: any = Comlink.wrap(new _Buildings());
-  Buildings.log();
-  const People: any = Comlink.wrap(new _People());
-  People.log();
-
-  ambient = await new Ambient();
-  buildings = await new Buildings(save.map);
-  // establish a callback so that any changes to buildings will update the map array
-  await buildings.setCallback(Comlink.proxy(newMap => {
-    map = newMap;
-    mapSize = Math.sqrt(map.length); // maps are square, so this should work?
-  }));
-  people = await new People();
-  // establish a callback so that updates to values will appear in UI
-  await people.setCallback(Comlink.proxy(properties => {
-    updateUIFromProperties(properties);
-  }));
 
   // now lets get some shaders going
   const vert = gl.createShader(gl.VERTEX_SHADER);

@@ -1,47 +1,42 @@
 import * as Comlink from "comlink";
+import loadDb, { getSave, GameSave } from '../db';
 
 class Buildings {
 
   mapSize: number;
 
 
-  _roads = [
-    [ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ false, true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false ],
-    [ true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, ],
-
-  ];
+  _roads = [];
 
   map = new Uint8Array();
 
   /**
    * Build the correct map size
    */
-  constructor (map: Uint8Array) {
-
-    this.map = map;
-
-    // get the proper size of the world
-    this.mapSize = Math.sqrt(map.length);
+  constructor () {
 
     // this.drawRoads();
+
+  }
+
+  /**
+   * Load the map from IndexedDB storage
+   */
+  async loadSave (saveName) {
+
+    // load save from indexedDB
+    const db = await loadDb();
+    const save = await getSave(db, saveName);
+    
+    // set the map to save.map
+    this.map = save.map;
+    // get the proper size of the world
+    this.mapSize = Math.sqrt(save.map.length);
+
+    // map updated! Trigger callback
+    this._cb(this.map);
+    // return it to main thread
+    return save;
 
   }
 

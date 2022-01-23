@@ -11,7 +11,7 @@ import fShaderSource from './shaders/shader.frag';
 
 import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
-import { updateUIFromProperties } from './ui';
+import { updateUIFromProperties, openTileMenu } from './ui';
 
 // load workers
 // @ts-expect-error
@@ -100,6 +100,9 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   // now update the tile on the map
   const mapCoord = mouseCoords[1] * mapSize + mouseCoords[0];
   buildings.setTile(mouseCoords[0], mouseCoords[1], map[mapCoord] + 1);
+
+  // add the component
+  openTileMenu(mouseCoords[0], mouseCoords[1]);
 
   //camera.enterFocus(gameCoords);
 });

@@ -1,5 +1,3 @@
-
-
 export default `varying highp vec2 vTextureCoord;
 uniform sampler2D uTexture;
 

@@ -93,7 +93,7 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   const mapCoord = gameCoords[1] * mapSize + gameCoords[0];
   buildings.setTile(gameCoords[0], gameCoords[1], map[mapCoord] + 1);
 
-  camera.enterFocus(gameCoords);
+  //camera.enterFocus(gameCoords);
 });
 
 init();

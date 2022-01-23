@@ -92,7 +92,7 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   // and that's the coordinates! Yay!
   mouseCoords = gameCoords;
 
-  console.log(mouseCoords);
+  // console.log(mouseCoords);
 
 });
 
@@ -199,7 +199,8 @@ async function init () {
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
-      texture: gl.getUniformLocation(shaderProgram, "uTexture")
+      texture: gl.getUniformLocation(shaderProgram, "uTexture"),
+      highlight: gl.getUniformLocation(shaderProgram, "uHighlight")
     },
   };
 
@@ -265,6 +266,13 @@ function render (programInfo) {
     for (let x = startX; x < startX + buildingsPerRow * 2; x ++) {
 
       let i = startIndex + x;
+
+      // if this tile is highlighted
+      if (x === mouseCoords[0] && z === mouseCoords[1]) {
+        gl.uniform1i(programInfo.uniformLocations.highlight, 1);
+      } else {
+        gl.uniform1i(programInfo.uniformLocations.highlight, 0);
+      }
 
       // if out of bounds, do not take from another row, just render an out of bounds tile
       if (!(x >= mapSize) && !(x < 0) && !(z < 0) && !(z >= mapSize)) {

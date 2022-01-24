@@ -20,9 +20,14 @@ export default class TileMenu extends LitElement {
 
   render () {
 
-    return html`<div class="tile-menu">
-      <h1>${this.x}, ${this.z}</h1>
-    </div>`;
+    return html`
+      <!-- cover canvas prevents further interaction with the canvas until the menu is closed -->
+      <div class="cover-canvas"></div>
+      <div class="tile-menu">
+        <img src="../icons/close.png" alt="close" class="close-button" />
+        <h1>${this.x}, ${this.z}</h1>
+      </div>
+    `;
 
   }
 

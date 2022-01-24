@@ -1,3 +1,20 @@
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+.cover-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 2;
+}
+
 .tile-menu {
   position: absolute;
   background: #555;

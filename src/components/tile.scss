@@ -1,0 +1,11 @@
+.tile-menu {
+  position: absolute;
+  background: #555;
+  z-index: 2;
+
+  // in portrait mode, adjust so it fills bottom part of screen
+  @media (orientation: portrait) {
+    left: 0;      bottom: 0;
+    width: 100%;  height: 50%;
+  }
+}

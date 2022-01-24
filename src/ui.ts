@@ -2,6 +2,7 @@
  * UI handles DOM interaction
  */
 // import all the UI components
+import './components/tile';
 import TileMenu from './components/tile';
 
 const money = document.querySelector('.money');

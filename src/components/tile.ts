@@ -1,8 +1,10 @@
 import { LitElement, html, css } from 'lit';
-import { customElement, property } from 'lit/decorators';
+import {customElement, property} from 'lit/decorators.js';
 
 // @ts-ignore
-import styles from './tile.scss?raw';
+import styles from './tile.scss';
+
+console.log(styles);
 
 /**
  * Component for info on property: building, demolishing, etc
@@ -18,7 +20,9 @@ export default class TileMenu extends LitElement {
 
   render () {
 
-    return html`<div class="tile-menu"></div>`;
+    return html`<div class="tile-menu">
+      <h1>${this.x}, ${this.z}</h1>
+    </div>`;
 
   }
 

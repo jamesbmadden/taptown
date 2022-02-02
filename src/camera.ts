@@ -30,7 +30,7 @@ export default class Camera {
     // align camera to starting position
     mat4.translate(this.cameraMatrix,
       this.cameraMatrix,
-      [0.0, 1.0, -3.0]);
+      [0.0, 0.0, -3.0]);
 
     // turn camera to isometric angle
     mat4.rotateX(this.cameraMatrix,

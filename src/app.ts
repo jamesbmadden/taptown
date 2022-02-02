@@ -74,7 +74,8 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   // first, get it based on the X/Y position, THEN change perspective
   // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
   const localX = event.clientX / ratioX / 2;
-  const localY = event.clientY / ratioY / 2 * 1.425;
+  // BOTTOM left of screen is 0, so this number will be negative
+  const localY = (window.innerHeight - event.clientY) / ratioY / 2 * 1.425;
 
   const gameCoords: vec2 = [localX, localY];
 
@@ -82,8 +83,9 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);
   // now it must be adjusted according to the camera's position
   // camera position must be adjusted slightly to match what the screen actually looks like
+  // adjustment for Y should *hopefully* be automatic from the new localY code
   // (camera positions, because its for the internal renderer and not game coordinates, need to be halved)
-  const cameraCoords: vec2 = [camera.x / 2 + 3.62, camera.z / 2 - 2.62];
+  const cameraCoords: vec2 = [camera.x / 2 + 3.62, camera.z / 2];
   vec2.add(gameCoords, gameCoords, cameraCoords);
   // floor the result 
   vec2.floor(gameCoords, gameCoords);

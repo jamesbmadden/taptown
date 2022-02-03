@@ -75,12 +75,10 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
   const localX = event.clientX / ratioX / 2;
   // BOTTOM left of screen is 0, so this number will be negative
-  console.log(event.clientY);
+  console.log(ratioX);
   const localY = (event.clientY - window.innerHeight) / 200 / 2 * 1.425;
 
   const gameCoords: vec2 = [localX, localY];
-
-  console.log(gameCoords);
 
   // now use vectors to change perspective
   vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);

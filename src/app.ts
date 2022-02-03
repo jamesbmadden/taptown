@@ -79,6 +79,8 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
 
   const gameCoords: vec2 = [localX, localY];
 
+  console.log(gameCoords);
+
   // now use vectors to change perspective
   vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);
   // now it must be adjusted according to the camera's position

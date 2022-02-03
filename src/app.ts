@@ -75,7 +75,7 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
   const localX = event.clientX / ratioX / 2;
   // BOTTOM left of screen is 0, so this number will be negative
-  const localY = (window.innerHeight - event.clientY) / 200 / 2 * 1.425;
+  const localY = (event.clientY - window.innerHeight) / 200 / 2 * 1.425;
 
   const gameCoords: vec2 = [localX, localY];
 

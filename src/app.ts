@@ -76,7 +76,7 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   const localX = event.clientX / ratioX / 2;
   // BOTTOM left of screen is 0, so this number will be negative
   console.log(ratioX);
-  const localY = (event.clientY - window.innerHeight) / 200 / 2 * 1.425;
+  const localY = (event.clientY - window.innerHeight) / ratioX / 2 * 1.425;
 
   const gameCoords: vec2 = [localX, localY];
 

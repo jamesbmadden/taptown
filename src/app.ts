@@ -86,7 +86,7 @@ canvas.addEventListener('mousemove', (event: MouseEvent) => {
   // camera position must be adjusted slightly to match what the screen actually looks like
   // adjustment for Y should *hopefully* be automatic from the new localY code
   // (camera positions, because its for the internal renderer and not game coordinates, need to be halved)
-  const cameraCoords: vec2 = [camera.x / 2, camera.z / 2];
+  const cameraCoords: vec2 = [camera.x / 2, camera.z / 2 + 1];
   vec2.add(gameCoords, gameCoords, cameraCoords);
   // floor the result 
   vec2.floor(gameCoords, gameCoords);

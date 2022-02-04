@@ -61,12 +61,14 @@ class Buildings {
    */
   buildRoad (x, z) {
 
+    console.log('building road');
     // get the coordinate in the map
     const mapId = z * this.mapSize + x;
     this._roads[mapId] = true;
     // run _drawRoads
     this._drawRoads();
     // now callback with the map
+    console.log('roads built');
     this._cb(this.map);
 
 
@@ -77,6 +79,7 @@ class Buildings {
    */
   _drawRoads () {
 
+    console.log('drawing roads');
     // loop over every tile in this._roads
     for (let i = 0; i < this._roads.length; i++) {
 

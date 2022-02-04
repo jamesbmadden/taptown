@@ -34,6 +34,7 @@ export default class TileMenu extends LitElement {
         <h1>${this.x}, ${this.z}</h1>
         <div class="buttons">
           <button @click=${() => {
+            console.log('building road');
             // build a road at this tile, then close
             buildings.buildRoad(this.x, this.z);
             this.close();

@@ -25,6 +25,7 @@ import _People from './workers/people?worker';
 let ambient;
 let buildings;
 let people;
+
 const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
 // each building is 2 x/z for reference
@@ -38,6 +39,9 @@ let mapSize: number;
 let camera = new Camera();
 // the coordinate mouse is hovering over (default to smth way out of the way)
 let mouseCoords = [-100, -100];
+
+// allow other files to easily access certain variables
+export { ambient, buildings, people, camera, mapSize };
 
 // provide the camera object on window for easier debugging
 // @ts-expect-error
@@ -101,7 +105,7 @@ canvas.addEventListener('click', (event: MouseEvent) => {
 
   // now update the tile on the map
   const mapCoord = mouseCoords[1] * mapSize + mouseCoords[0];
-  buildings.setTile(mouseCoords[0], mouseCoords[1], map[mapCoord] + 1);
+  // buildings.setTile(mouseCoords[0], mouseCoords[1], map[mapCoord] + 1);
 
   // add the component
   openTileMenu(mouseCoords[0], mouseCoords[1]);

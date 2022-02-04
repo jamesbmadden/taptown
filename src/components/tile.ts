@@ -4,8 +4,6 @@ import {customElement, property} from 'lit/decorators.js';
 // @ts-ignore
 import styles from './tile.scss';
 
-console.log(styles);
-
 /**
  * Component for info on property: building, demolishing, etc
  */

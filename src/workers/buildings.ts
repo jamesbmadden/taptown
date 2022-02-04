@@ -17,10 +17,6 @@ class Buildings {
 
     // this.drawRoads();
 
-    setInterval(() => {
-      console.log('[buildings] ping');
-    }, 1000);
-
   }
 
   /**

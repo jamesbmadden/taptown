@@ -24,7 +24,11 @@ export default class TileMenu extends LitElement {
       <!-- cover canvas prevents further interaction with the canvas until the menu is closed -->
       <div class="cover-canvas"></div>
       <div class="tile-menu">
-        <img src="../icons/close.png" alt="close" class="close-button" />
+        <img src="../icons/close.png" alt="close" class="close-button" @click=${() => {
+          // delete this element
+          this.remove();
+          // then in the future we have to reset the camera but for now we're good
+        }} />
         <h1>${this.x}, ${this.z}</h1>
       </div>
     `;

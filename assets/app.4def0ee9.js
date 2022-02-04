@@ -53,6 +53,14 @@ void main(void) {
     width: 100%;
     height: 50%;
   }
+}
+@media (orientation: landscape) {
+  .tile-menu {
+    left: 0;
+    top: 0;
+    width: 256px;
+    height: 100%;
+  }
 }`,J=globalThis&&globalThis.__decorate||function(e,a,o,c){var r=arguments.length,t=r<3?a:c===null?c=Object.getOwnPropertyDescriptor(a,o):c,d;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(e,a,o,c);else for(var n=e.length-1;n>=0;n--)(d=e[n])&&(t=(r<3?d(t):r>3?d(a,o,t):d(a,o))||t);return r>3&&t&&Object.defineProperty(a,o,t),t};console.log(q);let B=class extends be{render(){return Fe`
       <!-- cover canvas prevents further interaction with the canvas until the menu is closed -->
       <div class="cover-canvas"></div>

@@ -6,6 +6,7 @@ export interface Model {
   buffers: {
     vertex: WebGLBuffer, //WebGLBuffer,
     index: WebGLBuffer,
+    normal?: WebGLBuffer,
     texCoords?: WebGLBuffer
   },
   texture: WebGLTexture,
@@ -42,6 +43,8 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     let indexList = [];
     // list of vertices for each mesh to write to
     let vertexList = [];
+    // list of normals for each vertex
+    let normalList = [];
     // list of texture coordinates for each mesh to write to
     let texCoordsList = [];
 
@@ -112,6 +115,36 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
 
         }
 
+        // now, generate normals
+        for (let i = 0; i < vertexArray.length; i += 9) {
+
+          // implementation of pseudo-code from https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
+          // first, get all the points for this triangle as a vector
+          const p1: vec3 = [ vertexArray[i], vertexArray[i + 1], vertexArray[i + 2] ];
+          const p2: vec3 = [ vertexArray[i + 3], vertexArray[i + 4], vertexArray[i + 5] ];
+          const p3: vec3 = [ vertexArray[i + 6], vertexArray[i + 7], vertexArray[i + 8] ];
+
+          // make vectors to output to
+          const vU: vec3 = [0, 0, 0];
+          const vV: vec3 = [0, 0, 0];
+          const normal: vec3 = [0, 0, 0];
+
+          // calculate vectors U and V
+          vec3.subtract(vU, p2, p1);
+          vec3.subtract(vV, p3, p1);
+          // finally, set normals
+          // Set Normal.x to (multiply U.y by V.z) minus (multiply U.z by V.y)
+	        // Set Normal.y to (multiply U.z by V.x) minus (multiply U.x by V.z)
+	        // Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
+          normal[0] = (vU[0] * vV[2]) - (vU[2] * vV[1]);
+          normal[1] = (vU[2] * vV[0]) - (vU[0] * vV[2]);
+          normal[2] = (vU[0] * vV[1]) - (vU[1] * vV[0]);
+
+          // three needed to cover every vertex
+          normalList.push(...normal, ...normal, ...normal);
+
+        }
+
         // grab the texture coords data
         const texCoordsId = primitive.attributes.TEXCOORD_0;
         const texCoordsAccessor = modelJson.accessors[texCoordsId];
@@ -144,13 +177,18 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
     const texCoordsBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, texCoordsBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoordsList), gl.STATIC_DRAW);
+    // create normal buffer
+    const normalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalList), gl.STATIC_DRAW);
 
     resolve({
 
       buffers: {
         index: indexBuffer,
         vertex: vertexBuffer,
-        texCoords: texCoordsBuffer
+        texCoords: texCoordsBuffer,
+        normal: normalBuffer
       },
       indexCount: indexList.length,
       texture

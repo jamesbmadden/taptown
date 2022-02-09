@@ -1,6 +1,8 @@
 varying highp vec2 vTextureCoord;
 uniform sampler2D uTexture;
 
+varying highp vec3 vNormal;
+
 uniform bool uHighlight;
 
 void main(void) {

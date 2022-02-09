@@ -204,7 +204,7 @@ async function init () {
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
       textureCoordPosition: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
-      normalPosition: gl.getAttribLocation(shaderProgram, 'aNormalPosition')
+      normalPosition: gl.getAttribLocation(shaderProgram, 'aNormal')
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),

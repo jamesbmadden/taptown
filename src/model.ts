@@ -133,12 +133,7 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
           vec3.subtract(vU, p2, p1);
           vec3.subtract(vV, p3, p1);
           // finally, set normals
-          // Set Normal.x to (multiply U.y by V.z) minus (multiply U.z by V.y)
-	        // Set Normal.y to (multiply U.z by V.x) minus (multiply U.x by V.z)
-	        // Set Normal.z to (multiply U.x by V.y) minus (multiply U.y by V.x)
-          normal[0] = (vU[0] * vV[2]) - (vU[2] * vV[1]);
-          normal[1] = (vU[2] * vV[0]) - (vU[0] * vV[2]);
-          normal[2] = (vU[0] * vV[1]) - (vU[1] * vV[0]);
+          vec3.cross(normal, vU, vV);
 
           // three needed to cover every vertex
           normalList.push(...normal, ...normal, ...normal);

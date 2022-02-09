@@ -209,6 +209,7 @@ async function init () {
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),
       modelViewMatrix: gl.getUniformLocation(shaderProgram, 'uModelViewMatrix'),
+      normalMatrix: gl.getUniformLocation(shaderProgram, 'uNormalMatrix'),
       texture: gl.getUniformLocation(shaderProgram, "uTexture"),
       highlight: gl.getUniformLocation(shaderProgram, "uHighlight")
     },

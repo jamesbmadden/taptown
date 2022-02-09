@@ -197,6 +197,16 @@ export default function drawTile (gl: WebGLRenderingContext, modelId: number, [x
     false,
     modelViewMatrix);
 
+  // create a normal matrix
+  const normalMatrix = mat4.create();
+  mat4.invert(normalMatrix, modelViewMatrix);
+  mat4.transpose(normalMatrix, normalMatrix);
+
+  gl.uniformMatrix4fv(
+    programInfo.uniformLocations.normalMatrix,
+    false,
+    normalMatrix);
+
   // and bind the texture
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, model.texture);

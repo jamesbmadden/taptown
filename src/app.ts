@@ -6,8 +6,10 @@ import './app.css';
 import * as Comlink from 'comlink';
 import { mat4, vec2 } from 'gl-matrix';
 
-import vShaderSource from './shaders/shader.vert';
-import fShaderSource from './shaders/shader.frag';
+// @ts-ignore
+import vShaderSource from './shaders/shader.vert?raw';
+// @ts-ignore
+import fShaderSource from './shaders/shader.frag?raw';
 
 import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
@@ -202,6 +204,7 @@ async function init () {
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
       textureCoordPosition: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
+      normalPosition: gl.getAttribLocation(shaderProgram, 'aNormalPosition')
     },
     uniformLocations: {
       projectionMatrix: gl.getUniformLocation(shaderProgram, 'uProjectionMatrix'),

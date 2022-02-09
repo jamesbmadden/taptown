@@ -1,4 +1,4 @@
-export default `varying highp vec2 vTextureCoord;
+varying highp vec2 vTextureCoord;
 uniform sampler2D uTexture;
 
 uniform bool uHighlight;
@@ -11,4 +11,4 @@ void main(void) {
     gl_FragColor = texture2D(uTexture, vTextureCoord);
   }
   
-}`
+}

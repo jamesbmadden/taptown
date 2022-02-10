@@ -115,6 +115,13 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   //camera.enterFocus(gameCoords);
 });
 
+// when a tt-buildroad event is fired, send it to Buildings
+window.addEventListener('tt-buildroad', (event: CustomEvent) => {
+
+  buildings.buildRoad(event.detail.x, event.detail.z);
+
+});
+
 init();
 
 // initate everything before running the game loop

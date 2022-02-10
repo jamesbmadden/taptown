@@ -34,6 +34,7 @@ export default class TileMenu extends LitElement {
           <button @click=${() => {
             console.log('building road');
             // build a road at this tile, then close
+            window.dispatchEvent(new CustomEvent('tt-buildroad', { detail: { x: this.x, z: this.z } }))
             // buildings.buildRoad(this.x, this.z);
             this.close();
           }}>Build Road</button>

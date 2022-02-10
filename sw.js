@@ -1,7 +1,7 @@
 // this is the production version of this file :)
 // appVer is specific to THIS BUILD only and is used to manage caching.
 // Files to cache is a list of the file names actually used in this version.
-var appVer = '2022.1.10.2.1.39';
+var appVer = '2022.1.10.2.2.36';
 var filesToCache = [ '/app/index.html','/assets/Cafe.5a05628e.gltf','/assets/Road--l.cec3388c.gltf','/assets/Road-T.dd27be2f.gltf','/assets/Road-_l_.04dac8e2.gltf','/assets/Road-cross.c0149426.gltf','/assets/Road-down.3aa34828.gltf','/assets/Road-downright.2ee19715.gltf','/assets/Road-l-.8fa437e2.gltf','/assets/Road-left.e4d57c46.gltf','/assets/Road-leftdown.43e4587d.gltf','/assets/Road-right.05535041.gltf','/assets/Road-rightup.f9b3a2d6.gltf','/assets/Road-single.f2299542.gltf','/assets/Road-up.f33fbfbe.gltf','/assets/Road-upleft.8e8e8992.gltf','/assets/Road-x.25087994.gltf','/assets/Road-y.43b84893.gltf','/assets/ambient.6d469442.js','/assets/app.411d0837.css','/assets/app.4db3a707.js','/assets/buildings.9671986a.js','/assets/landing.0a5968e9.js','/assets/landing.11d65904.css','/assets/modulepreload-polyfill.b7f2da20.js','/assets/outofbounds.8b7ad541.gltf','/assets/people.f51a4310.js','/assets/vendor.eacfab9e.js','/icons/close.png','/img/icons/logo-128.png','/img/icons/logo-192.png','/img/icons/logo-256.png','/img/icons/logo-32.png','/img/icons/logo-512.png','/img/icons/logo-64.png','/img/icons/logo-square-128.png','/img/icons/logo-square-192.png','/img/icons/logo-square-256.png','/img/icons/logo-square-32.png','/img/icons/logo-square-512.png','/img/icons/logo-square-64.png','/img/logo.png','/','/app/','/index.html' ];
 
 // the name to use for the cache
@@ -49,7 +49,6 @@ async function fromCache(request) {
   const cache = await caches.open(cacheId);
   // and open the specific file
   // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
-  console.log(request.url.split('?')[0]);
   const response = await cache.match(request.url.split('?')[0]);
 
   // check if the cache worked

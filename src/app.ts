@@ -14,6 +14,7 @@ import fShaderSource from './shaders/shader.frag?raw';
 import drawTile, { init as initDrawTiles } from './drawTile';
 import Camera from './camera';
 import { updateUIFromProperties, openTileMenu } from './ui';
+import shadowRender, { createFrameBuffer } from './shadow';
 
 // load workers
 // @ts-expect-error
@@ -205,9 +206,13 @@ async function init () {
     return null;
   }
 
+  // create a frame buffer for the shadows
+  const frameBuffer = createFrameBuffer(gl, innerWidth, innerHeight);
+
   // get locations for attributes and uniforms
   const programInfo = {
     program: shaderProgram,
+    frameBuffer,
     attribLocations: {
       vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
       textureCoordPosition: gl.getAttribLocation(shaderProgram, 'aTextureCoord'),
@@ -232,6 +237,7 @@ async function init () {
     let delta = now - lastTime;
     // camera must be updated before render to get any moving done
     // camera.update(delta);
+    shadowRender(gl, frameBuffer, { camera, buildingsPerRow, buildingsPerColumn, map, mapSize });
     render(programInfo);
     requestAnimationFrame(gameLoop);
 

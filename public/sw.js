@@ -47,7 +47,6 @@ async function fromCache(request) {
   const cache = await caches.open(cacheId);
   // and open the specific file
   // if the file contains a search query (?save=) at the end, STRIP IT OUT because it will just mess up the cache reading
-  console.log(request.url.split('?')[0]);
   const response = await cache.match(request.url.split('?')[0]);
 
   // check if the cache worked

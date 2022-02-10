@@ -115,41 +115,17 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
 
         }
 
-        // now, generate normals
-        for (let i = 0; i < vertexArray.length; i += 9) {
+        // grab the normal data
+        const normalId = primitive.attributes.NORMAL;
+        const normalAccessor = modelJson.accessors[normalId];
+        const normalBufferView = modelJson.bufferViews[normalAccessor.bufferView];
 
-          // implementation of pseudo-code from https://www.khronos.org/opengl/wiki/Calculating_a_Surface_Normal
-          // first, get all the points for this triangle as a vector
-          const p1: vec3 = [ vertexArray[i], vertexArray[i + 1], vertexArray[i + 2] ];
-          const p2: vec3 = [ vertexArray[i + 3], vertexArray[i + 4], vertexArray[i + 5] ];
-          const p3: vec3 = [ vertexArray[i + 6], vertexArray[i + 7], vertexArray[i + 8] ];
-
-          // make vectors to output to
-          const vU: vec3 = [0, 0, 0];
-          const vV: vec3 = [0, 0, 0];
-          const normal: vec3 = [0, 0, 0];
-
-          // calculate vectors U and V
-          vec3.subtract(vU, p2, p1);
-          vec3.subtract(vV, p3, p1);
-          // finally, set normals
-          vec3.cross(normal, vU, vV);
-
-          // three needed to cover every vertex
-          normalList.push(...normal, ...normal, ...normal);
-
-        }
-
-        // grab the texture coords data
-        const texCoordsId = primitive.attributes.TEXCOORD_0;
-        const texCoordsAccessor = modelJson.accessors[texCoordsId];
-        const texCoordsBufferView = modelJson.bufferViews[texCoordsAccessor.bufferView];
-
-        // slice the blob to just this set of coords
-        const texCoordsBlobSlice = blob.slice(texCoordsBufferView.byteOffset, texCoordsBufferView.byteOffset + texCoordsBufferView.byteLength);
-        // convert to Float32Array then add to tex coords list
-        const texCoordsArray = new Float32Array(await texCoordsBlobSlice.arrayBuffer());
-        texCoordsList.push(...texCoordsArray);
+        // slice the blob to just this set of normals
+        const normalBlobSlice = blob.slice(normalBufferView.byteOffset, normalBufferView.byteOffset + normalBufferView.byteLength);
+        // convert to Flaot32Array then add to vector list
+        const normalArray = new Float32Array(await normalBlobSlice.arrayBuffer());
+        // push to list
+        normalList.push(...normalArray);
 
       }
 

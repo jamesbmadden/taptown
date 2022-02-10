@@ -127,6 +127,17 @@ export default function loadModel (gl: WebGLRenderingContext, url: string): Prom
         // push to list
         normalList.push(...normalArray);
 
+        // grab the texture coords data
+        const texCoordsId = primitive.attributes.TEXCOORD_0;
+        const texCoordsAccessor = modelJson.accessors[texCoordsId];
+        const texCoordsBufferView = modelJson.bufferViews[texCoordsAccessor.bufferView];
+
+        // slice the blob to just this set of coords
+        const texCoordsBlobSlice = blob.slice(texCoordsBufferView.byteOffset, texCoordsBufferView.byteOffset + texCoordsBufferView.byteLength);
+        // convert to Float32Array then add to tex coords list
+        const texCoordsArray = new Float32Array(await texCoordsBlobSlice.arrayBuffer());
+        texCoordsList.push(...texCoordsArray);
+
       }
 
       nodeIndex++;

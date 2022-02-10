@@ -1,8 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
-import { buildings, mapSize } from '../app';
-
 // @ts-ignore
 import styles from './tile.scss';
 
@@ -36,7 +34,7 @@ export default class TileMenu extends LitElement {
           <button @click=${() => {
             console.log('building road');
             // build a road at this tile, then close
-            buildings.buildRoad(this.x, this.z);
+            // buildings.buildRoad(this.x, this.z);
             this.close();
           }}>Build Road</button>
           <button>Build Cafe</button>

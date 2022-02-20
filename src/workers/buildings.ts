@@ -49,6 +49,9 @@ class Buildings {
 
     // get the coordinate in the map
     const mapId = z * this.mapSize + x;
+    this._roads[mapId] = false;
+    // run _drawRoads
+    this._drawRoads();
     this.map[mapId] = type;
 
     // now trigger an update on the main thread

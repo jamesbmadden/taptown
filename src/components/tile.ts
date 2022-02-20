@@ -1,6 +1,8 @@
 import { LitElement, html, css } from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
+import { ambient, buildings, people } from '../workers';
+
 // @ts-ignore
 import styles from './tile.scss';
 
@@ -32,13 +34,15 @@ export default class TileMenu extends LitElement {
         <h1>${this.x}, ${this.z}</h1>
         <div class="buttons">
           <button @click=${() => {
-            console.log('building road');
             // build a road at this tile, then close
-            window.dispatchEvent(new CustomEvent('tt-buildroad', { detail: { x: this.x, z: this.z } }))
-            // buildings.buildRoad(this.x, this.z);
+            buildings.buildRoad(this.x, this.z);
             this.close();
           }}>Build Road</button>
-          <button>Build Cafe</button>
+          <button @click=${() => {
+            // build a road at this tile, then close
+            buildings.setTile(this.x, this.z, 255);
+            this.close();
+          }}>Build Cafe</button>
         </div>
       </div>
     `;

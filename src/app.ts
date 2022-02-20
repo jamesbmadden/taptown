@@ -16,19 +16,9 @@ import Camera from './camera';
 import { updateUIFromProperties, openTileMenu } from './ui';
 import shadowRender, { createFrameBuffer } from './shadow';
 
-// load workers
-// @ts-expect-error
-import _Ambient from './workers/ambient?worker';
-// @ts-expect-error
-import _Buildings from './workers/buildings?worker';
-// @ts-expect-error
-import _People from './workers/people?worker';
+import { createWorkers, ambient, buildings, people } from './workers';
 
 // global variables
-let ambient;
-let buildings;
-let people;
-
 const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
 // each building is 2 x/z for reference
@@ -116,35 +106,21 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   //camera.enterFocus(gameCoords);
 });
 
-// when a tt-buildroad event is fired, send it to Buildings
-window.addEventListener('tt-buildroad', (event: CustomEvent) => {
-
-  buildings.buildRoad(event.detail.x, event.detail.z);
-
-});
-
 init();
 
 // initate everything before running the game loop
 async function init () {
 
   // set up workers
-  const Ambient: any = Comlink.wrap(new _Ambient());
-  Ambient.log();
-  const Buildings: any = Comlink.wrap(new _Buildings());
-  Buildings.log();
-  const People: any = Comlink.wrap(new _People());
-  People.log();
-
-  ambient = await new Ambient();
-  buildings = await new Buildings();
+  await createWorkers();
+  
   // establish a callback so that any changes to buildings will update the map array
   await buildings.setCallback(Comlink.proxy(newMap => {
     console.log('recieved new map');
     map = newMap;
     mapSize = Math.sqrt(map.length); // maps are square, so this should work?
   }));
-  people = await new People();
+  
   // establish a callback so that updates to values will appear in UI
   await people.setCallback(Comlink.proxy(properties => {
     updateUIFromProperties(properties);

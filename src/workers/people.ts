@@ -15,11 +15,11 @@ class People {
   ambientPort: MessagePort;
 
   // group people by property, it can be flattened for whole population
-  
+  people: Person[][] = [];
 
   properties = {
     money: 100,
-    population: 10
+    population: 0
   }
 
   _cb: Function;

@@ -54,7 +54,7 @@ class Buildings {
   /**
    * Change a tile type and trigger an update on the main thread
    */
-  setTile (x, z, type) {
+  async setTile (x, z, type) {
 
     // get the coordinate in the map
     const mapId = z * this.mapSize + x;
@@ -62,6 +62,13 @@ class Buildings {
     // run _drawRoads
     this._drawRoads();
     this.map[mapId] = type;
+
+    // if the type is 255 (debug, currently used as housing), tell people to move some people in!
+    if (type === 255) {
+
+      await this.people.moveIn(mapId, type);
+
+    }
 
     // now trigger an update on the main thread
     this._cb(this.map);

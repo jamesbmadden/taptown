@@ -1,5 +1,8 @@
 import * as Comlink from "comlink";
 
+// an ease-of-use function for generating a random integer
+const randomInt = (min: number, max: number) => Math.floor(min + Math.random() * (max - min + 1));
+
 interface Person {
   name: [String, String],
   property: number,
@@ -36,6 +39,19 @@ class People {
 
   test (worker: String) {
     console.log('recieved cross-worker from ' + worker);
+  }
+
+  /**
+   * Move in a household to a newly built tile
+   * @param tile The location of the tile to use
+   * @param type Type of tile being built
+   */
+  moveIn (tile: number, type: number) {
+
+    // pick how many people to move in
+    const householdSize = randomInt(1, 5);
+    console.log(householdSize);
+
   }
 
   static log () {

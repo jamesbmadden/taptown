@@ -116,7 +116,6 @@ async function init () {
   
   // establish a callback so that any changes to buildings will update the map array
   await buildings.setCallback(Comlink.proxy(newMap => {
-    console.log('recieved new map');
     map = newMap;
     mapSize = Math.sqrt(map.length); // maps are square, so this should work?
   }));

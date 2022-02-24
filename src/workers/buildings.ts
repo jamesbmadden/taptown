@@ -3,6 +3,9 @@ import loadDb, { getSave, GameSave } from '../db';
 
 class Buildings {
 
+  // ports for communicating with other workers
+  peoplePort: MessagePort;
+
   mapSize: number;
 
 
@@ -13,8 +16,11 @@ class Buildings {
   /**
    * Build the correct map size
    */
-  constructor () {
+  constructor (peoplePort) {
 
+    // recieve the port for people
+    this.peoplePort = peoplePort;
+    
     // this.drawRoads();
 
   }

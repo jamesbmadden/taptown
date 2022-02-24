@@ -10,6 +10,10 @@ interface Person {
 
 class People {
 
+  // ports for communicating with other workers
+  buildingsPort: MessagePort;
+  ambientPort: MessagePort;
+
   // group people by property, it can be flattened for whole population
   
 
@@ -19,6 +23,14 @@ class People {
   }
 
   _cb: Function;
+
+  constructor (buildingsPort, ambientPort) {
+
+    // recieve the ports
+    this.buildingsPort = buildingsPort;
+    this.ambientPort = ambientPort;
+
+  }
 
   static log () {
     console.log('people worker running');

@@ -1,6 +1,6 @@
 # TapTown Game
 
-![](https://i.imgur.com/ENEX8nN.png)
+![](https://i.imgur.com/aUdFiSL.png)
 *Early work in progress version of the game*
 
 Inspired by Sim City and Cities Skylines, TapTown is a simple game built on Web technologies like WebGL, IndexedDB, and Web Workers.

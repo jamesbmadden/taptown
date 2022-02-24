@@ -84,6 +84,20 @@ class People {
 
   }
 
+  /**
+   * Get the list of residents at the specified x and y coordinates
+   * @param x 
+   * @param z 
+   */
+  getResidents (x, z) {
+
+    // get the index in the array
+    const mapId = z * 64 + x;
+    // return the people at that index
+    return this.people[mapId];
+
+  }
+
   static log () {
     console.log('people worker running');
   }

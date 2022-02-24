@@ -15,6 +15,8 @@ export default class TileMenu extends LitElement {
   @property() x: number;
   @property() z: number;
 
+  @property() residents;
+
   // @ts-ignore
   static styles = css([styles]);
 
@@ -22,6 +24,15 @@ export default class TileMenu extends LitElement {
     // delete this element
     this.remove();
     // then in the future we have to reset the camera but for now we're good
+  }
+
+  async connectedCallback() {
+
+    super.connectedCallback();
+    
+    // load the residents
+    this.residents = await people.getResidents(this.x, this.z);
+
   }
 
   render () {
@@ -43,6 +54,12 @@ export default class TileMenu extends LitElement {
             buildings.setTile(this.x, this.z, 255);
             this.close();
           }}>Build Cafe</button>
+        </div>
+        <div class="residents">
+          <h2>Residents</h2>
+          <ul>
+            ${this.residents?.map(person => html`<li>${person.name[0]} ${person.name[1]}</li>`)}
+          </ul>
         </div>
       </div>
     `;

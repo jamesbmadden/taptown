@@ -24,16 +24,18 @@ class People {
 
   _cb: Function;
 
-  constructor (fromBuildings, toBuildings) {
+  constructor (fromBuildings, toBuildings, fromAmbient, toAmbient) {
 
     // recieve the port for people and use comlink to allow communication
     Comlink.expose(this, toBuildings);
+    Comlink.expose(this, toAmbient);
     this.buildings = Comlink.wrap(fromBuildings);
+    this.ambient = Comlink.wrap(fromAmbient);
 
   }
 
-  test () {
-    console.log('cross-worker comlink working');
+  test (worker: String) {
+    console.log('recieved cross-worker from ' + worker);
   }
 
   static log () {

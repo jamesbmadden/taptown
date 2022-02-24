@@ -22,7 +22,7 @@ class Buildings {
     Comlink.expose(this, toPeople);
     this.people = Comlink.wrap(fromPeople);
 
-    this.people.test();
+    this.people.test('buildings');
     
     // this.drawRoads();
 

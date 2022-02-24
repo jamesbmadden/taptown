@@ -2,13 +2,18 @@ import * as Comlink from "comlink";
 
 class Ambient {
 
-  // ports for communicating with other workers
-  peoplePort: MessagePort;
+  // wrapped port to communicate with people
+  people;
 
-  constructor (peoplePort) {
+  constructor (fromPeople, toPeople) {
 
     // recieve port for people
-    this.peoplePort = peoplePort;
+    // recieve the port for people and use comlink to allow communication
+    Comlink.expose(this, toPeople);
+    this.people = Comlink.wrap(fromPeople);
+
+    this.people.test('ambient');
+    
 
   }
 

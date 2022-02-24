@@ -3,8 +3,8 @@ import loadDb, { getSave, GameSave } from '../db';
 
 class Buildings {
 
-  // ports for communicating with other workers
-  peoplePort: MessagePort;
+  // wrapped port to communicate with people
+  people;
 
   mapSize: number;
 
@@ -16,10 +16,13 @@ class Buildings {
   /**
    * Build the correct map size
    */
-  constructor (peoplePort) {
+  constructor (fromPeople, toPeople) {
 
-    // recieve the port for people
-    this.peoplePort = peoplePort;
+    // recieve the port for people and use comlink to allow communication
+    Comlink.expose(this, toPeople);
+    this.people = Comlink.wrap(fromPeople);
+
+    this.people.test();
     
     // this.drawRoads();
 

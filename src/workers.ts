@@ -15,8 +15,13 @@ let people;
 export { ambient, buildings, people };
 
 // create MessagePorts to communicate between workers
-const buildingsPeopleChannel = new MessageChannel();
-const ambientPeopleChannel = new MessageChannel();
+// because these channels will be wrapped by comlink, one is required per worker that it can establish itself on,
+// while each other worker requires a channel to wrap.
+// PORT 1 is for THE WORKER ITSELF, PORT 2 is for communicating with it.
+// unfortunately, a Message channel is needed for each direction of each worker
+// const toAmbientChannel = new MessageChannel();
+const peopleToBuildingsChannel = new MessageChannel();
+const buildingsToPeopleChannel = new MessageChannel();
 
 export async function createWorkers () {
 
@@ -29,9 +34,15 @@ export async function createWorkers () {
   People.log();
   // and create instances
   // instances require being passed the ports to allow them to comunicate with each other
-  ambient = await new Ambient(Comlink.transfer(ambientPeopleChannel.port1, [ambientPeopleChannel.port1]));
-  buildings = await new Buildings(Comlink.transfer(buildingsPeopleChannel.port1, [buildingsPeopleChannel.port1]));
-  people = await new People(Comlink.transfer(buildingsPeopleChannel.port2, [buildingsPeopleChannel.port2]), Comlink.transfer(ambientPeopleChannel.port2, [ambientPeopleChannel.port2]));
+  ambient = await new Ambient();
+  buildings = await new Buildings(
+    Comlink.transfer(peopleToBuildingsChannel.port1, [peopleToBuildingsChannel.port1]),
+    Comlink.transfer(buildingsToPeopleChannel.port2, [buildingsToPeopleChannel.port2]),
+  );
+  people = await new People(
+    Comlink.transfer(buildingsToPeopleChannel.port1, [buildingsToPeopleChannel.port1]),
+    Comlink.transfer(peopleToBuildingsChannel.port2, [peopleToBuildingsChannel.port2])
+  );
 
   return { ambient, buildings, people };
 

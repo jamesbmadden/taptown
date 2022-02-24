@@ -10,9 +10,9 @@ interface Person {
 
 class People {
 
-  // ports for communicating with other workers
-  buildingsPort: MessagePort;
-  ambientPort: MessagePort;
+  // reference wrapped by comlink
+  buildings;
+  ambient;
 
   // group people by property, it can be flattened for whole population
   people: Person[][] = [];
@@ -24,12 +24,16 @@ class People {
 
   _cb: Function;
 
-  constructor (buildingsPort, ambientPort) {
+  constructor (fromBuildings, toBuildings) {
 
-    // recieve the ports
-    this.buildingsPort = buildingsPort;
-    this.ambientPort = ambientPort;
+    // recieve the port for people and use comlink to allow communication
+    Comlink.expose(this, toBuildings);
+    this.buildings = Comlink.wrap(fromBuildings);
 
+  }
+
+  test () {
+    console.log('cross-worker comlink working');
   }
 
   static log () {

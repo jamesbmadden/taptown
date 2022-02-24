@@ -1,4 +1,7 @@
 import * as Comlink from "comlink";
+// import list of names for use in generating people
+// this is a big file, potentially consider lazy loading in the future?
+import { firstNames, lastNames } from '../lists/names';
 
 // an ease-of-use function for generating a random integer
 const randomInt = (min: number, max: number) => Math.floor(min + Math.random() * (max - min + 1));
@@ -57,11 +60,13 @@ class People {
     console.log(householdSize);
     // create an array of length householdSize of people to move in here
     const household = [];
+    // the whole household shares a last name, so pick it here:
+    const lastName = lastNames[randomInt(0, 1999)];
     for (let i = 0; i < householdSize; i++) {
 
       // eventually these characteristics will be randomized but for now it is prefilled
       const debugPerson = {
-        name: ['John', 'Madden'],
+        name: [firstNames[randomInt(0, 999)], lastName],
         property: tile,
         isEmployed: false,
         age: 0,
@@ -70,6 +75,7 @@ class People {
       household.push(debugPerson);
 
     }
+    console.log(household);
     // now add the people at their property ID in the population array
     this.people[tile] = household;
     // update the world properties to match the new population

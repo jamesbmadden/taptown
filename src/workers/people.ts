@@ -17,6 +17,10 @@ class People {
   buildings;
   ambient;
 
+  // this needs to be loaded from a save once that's implemented
+  // lets the game keep track of what unique ID to use for the next person to move in
+  nextPersonId = 0;
+
   // group people by property, it can be flattened for whole population
   people: Person[][] = [];
 
@@ -51,6 +55,26 @@ class People {
     // pick how many people to move in
     const householdSize = randomInt(1, 5);
     console.log(householdSize);
+    // create an array of length householdSize of people to move in here
+    const household = [];
+    for (let i = 0; i < householdSize; i++) {
+
+      // eventually these characteristics will be randomized but for now it is prefilled
+      const debugPerson = {
+        name: ['John', 'Madden'],
+        property: tile,
+        isEmployed: false,
+        age: 0,
+        id: this.nextPersonId++
+      }
+      household.push(debugPerson);
+
+    }
+    // now add the people at their property ID in the population array
+    this.people[tile] = household;
+    // update the world properties to match the new population
+    this.properties.population = this.people.flat().length;
+    this._cb(this.properties);
 
   }
 

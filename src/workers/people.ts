@@ -1,6 +1,17 @@
 import * as Comlink from "comlink";
 
+interface Person {
+  name: [String, String],
+  property: number,
+  isEmployed: boolean,
+  age: number,
+  id: number
+}
+
 class People {
+
+  // group people by property, it can be flattened for whole population
+  
 
   properties = {
     money: 100,

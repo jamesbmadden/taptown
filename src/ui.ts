@@ -22,7 +22,7 @@ export function updateUIFromProperties (properties) {
 /**
  * open the tile menu
  */
-export function openTileMenu (x: number, z: number) {
+export function openTileMenu (x: number, z: number, event: MouseEvent) {
 
   // create element
   // @ts-ignore
@@ -30,6 +30,7 @@ export function openTileMenu (x: number, z: number) {
   // set the properties
   tileComponent.x = x;
   tileComponent.z = z;
+  tileComponent.mouse = [event.clientX, event.clientY];
   // add it to the document
   document.body.appendChild(tileComponent);
 

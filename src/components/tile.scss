@@ -15,10 +15,18 @@
   z-index: 2;
 }
 
+@keyframes openTileMouse {
+  from {
+    transform: scale(0);
+  }
+}
+
 .tile-menu {
   position: absolute;
   background: #555;
   z-index: 2;
+  transform-origin: top left;
+  transform-origin: var(--transform-origin);
 
   // in portrait mode, adjust so it fills bottom part of screen
   @media (orientation: portrait) {
@@ -29,5 +37,11 @@
   @media (orientation: landscape) {
     left: 0;      top: 0;
     width: 256px; height: 100%;
+  }
+  // on a computer, position it by mouse
+  @media (pointer: fine) {
+    left: var(--mouse-x); top: var(--mouse-y);
+    width: 256px;         height: 386px;
+    animation: openTileMouse 0.2s ease;
   }
 }

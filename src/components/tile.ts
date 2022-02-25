@@ -14,6 +14,7 @@ export default class TileMenu extends LitElement {
 
   @property() x: number;
   @property() z: number;
+  @property() mouse: [number, number];
 
   @property() residents;
 
@@ -29,6 +30,30 @@ export default class TileMenu extends LitElement {
   async connectedCallback() {
 
     super.connectedCallback();
+
+    // set click position so popup can be by mouse on desktop
+    let transformOrigin = '';
+
+    // check what side to pop x up on
+    // if its on the left, transform origin x must be set
+    if (this.mouse[0] < innerWidth / 2) {
+      this.style.setProperty('--mouse-x', `${this.mouse[0]}px`);
+      transformOrigin = 'left ';
+    }
+    else {
+      this.style.setProperty('--mouse-x', `${this.mouse[0] - 256}px`);
+      transformOrigin = 'right ';
+    }
+    // check what side to pop y up on
+    if (this.mouse[1] < innerHeight / 2) {
+      this.style.setProperty('--mouse-y', `${this.mouse[1]}px`);
+      transformOrigin += 'top';
+    } else {
+      this.style.setProperty('--mouse-y', `${this.mouse[1] - 386}px`);
+      transformOrigin += 'bottom';
+    }
+    // set the transform origin
+    this.style.setProperty('--transform-origin', transformOrigin);
     
     // load the residents
     this.residents = await people.getResidents(this.x, this.z);

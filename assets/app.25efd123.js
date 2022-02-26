@@ -105,6 +105,7 @@ void main(void) {
   transform-origin: top left;
   transform-origin: var(--transform-origin);
   filter: drop-shadow(0px 8px 8px rgba(0, 0, 0, 0.5));
+  color: white;
 }
 @media (orientation: portrait) {
   .tile-menu {

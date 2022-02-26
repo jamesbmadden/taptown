@@ -6,16 +6,15 @@ import '@pwabuilder/pwainstall';
 import loadDb, { getSavesList, GameSave } from './db';
 
 // get references to elements
-const savesListElement = document.querySelector('.game-saves');
-const addButton = document.querySelector('.add-save');
-// @ts-expect-error
-const newSaveInput: HTMLInputElement = document.getElementById('new-save-name');
+const homeCardsElement = document.querySelector('.home-cards');
 
 // determine whether we are running in PWA mode?
 const isPwa = (new URLSearchParams(location.search)).get('pwa');
 // if it's in PWA mode, disable the install button
 // @ts-ignore
-if (isPwa === 'true') document.querySelector('.pwa-button').hidden = true;
+if (isPwa === 'true') document.querySelector('.card-install').hidden = true;
+
+let db;
 
 main();
 
@@ -23,16 +22,26 @@ main();
 async function main () {
 
   // open a database. If one doesn't exist, create it.
-  const db = await loadDb();
+  db = await loadDb();
+
+  addButtonListener();
 
   // get list of saves to add to saves list
   updateSavesList(await getSavesList(db));
+
+
+}
+
+function addButtonListener () {
+
+  const addButton = document.querySelector('.add-save');
 
   // when add button is clicked, add new save to indexedDB
   addButton.addEventListener('click', async () => {
 
     // get the new save name
-    const key = newSaveInput.value;
+    // @ts-ignore
+    const key = document.getElementById('new-save-name').value;
 
     // pretend this is valid game data
     const emptySave: GameSave = {
@@ -58,7 +67,6 @@ async function main () {
 
   });
 
-
 }
 
 /**
@@ -67,19 +75,33 @@ async function main () {
 function updateSavesList (savesList: Array<any>) {
 
   // first clear out the saves
-  savesListElement.innerHTML = ``;
+  homeCardsElement.innerHTML = `<div class="card card-install" onclick="document.querySelector('pwa-install').openPrompt()">
+  <div class="card-inner">
+    <h2>Install TapTown</h2>
+    <p>Add TapTown to your homescreen for easy access and a full app experience.</p>
+  </div>
+</div>`;
 
   savesList.forEach(save => {
 
-    const span = document.createElement('span');
-    span.textContent = save;
-
-    const li = document.createElement('li');
-    li.innerHTML = `${span.outerHTML} - <a href="./app/?save=${encodeURIComponent(save)}">Play</a>`;
+    const card = document.createElement('a');
+    card.className = 'card card-saves';
+    card.href = `./app/?save=${encodeURIComponent(save)}`;
+    card.innerHTML = `<div class="card-inner"><h2>${save}</h2></div>`;
 
     // add to the savesListElement
-    savesListElement.appendChild(li);
+    homeCardsElement.appendChild(card);
 
   });
+
+  homeCardsElement.innerHTML += `<div class="card card-newsave">
+    <div class="card-inner">
+      <h2>Add New Save</h2>
+      <label for="new-save-name">New Save:</label><input id="new-save-name" name="new-save-name" type="string"><button class="add-save">Add</button>
+    </div>
+  </div>
+</div>`;
+
+  addButtonListener();
 
 }

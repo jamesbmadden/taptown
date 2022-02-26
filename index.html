@@ -4,7 +4,7 @@
     <title>🏠 TapTown!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <script type="module" src="./src/index.ts"></script>
-    <link rel="stylesheet" href="./src/index.css" />
+    <link rel="stylesheet" href="./src/index.scss" />
     <link rel="manifest" href="./manifest.json" />
     <meta name="theme-color" content="#64a666" />
     <link rel="icon" type="image/png" sizes="64x64" href="./img/icons/logo-64.png" />
@@ -41,12 +41,22 @@
       <img class="logo" src="./img/logo.png" alt="TapTown">
     </header>
     <main>
-      <h2>Saves</h2>
-      <ul class="game-saves"></ul>
-      <h3>Add New Save</h3>
-      <label for="new-save-name">New Save:</label><input id="new-save-name" name="new-save-name" type="string"><button class="add-save">Add</button>
+      <div class="home-cards">
+        <div class="card card-install" onclick="document.querySelector('pwa-install').openPrompt()">
+          <div class="card-inner">
+            <h2>Install TapTown</h2>
+            <p>Add TapTown to your homescreen for easy access and a full app experience.</p>
+          </div>
+        </div>
+        
+        <div class="card card-newsave">
+          <div class="card-inner">
+            <h2>Add New Save</h2>
+            <label for="new-save-name">New Save:</label><input id="new-save-name" name="new-save-name" type="string"><button class="add-save">Add</button>
+          </div>
+        </div>
+      </div>
       <pwa-install usecustom></pwa-install>
-      <button class="pwa-button" onclick="document.querySelector('pwa-install').openPrompt()">Open PWA-Install</button>
     </main>
   </body>
 </html>

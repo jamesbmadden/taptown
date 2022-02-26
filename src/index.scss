@@ -1,0 +1,70 @@
+@use "sass:math";
+
+body {
+  background: #64a666;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+}
+img {
+  display: block;
+  width: 75%;
+  max-width: 386px;
+  margin: auto;
+  margin-top: 4rem;
+}
+.bg-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  z-index: -1;
+}
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 256px);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  @media (orientation: landscape) {
+    flex-direction: row;
+  }
+  @media (orientation: portrait) {
+    flex-direction: column;
+  }
+}
+.card {
+  position: relative;
+  height: 0;
+  color: white;
+  width: 100%;
+  padding-top: 50%;
+  background-size: contain;
+}
+.card-install { background-image: url('../img/ui/tile-pwa.png') }
+.card-saves { background-image: url('../img/ui/tile-save.png') }
+.card-newsave { background-image: url('../img/ui/tile-newsave.png') }
+.card-inner {
+  position: absolute; top: 1rem; left: 1rem;
+  box-sizing: border-box;
+  padding: 0; padding-right: 1rem;
+  h2 { margin: 0.2rem; }
+  p { margin: 0; }
+}
+
+@media (orientation: landscape) {
+  .bg-video {
+    width: 100%;
+  }
+}
+@media (orientation: portrait) {
+  .bg-video {
+    height: 100%;
+  }
+}

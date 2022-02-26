@@ -127,7 +127,25 @@ export default class Camera {
 
     // find out how much the camera must be moved to align this tile to the centre
     // to centre the tile it must also be adjusted by half a tile width vertically and horizontally
-    const camOffset: vec2 = screenToGameCoords(innerWidth / 2, innerHeight / 2);
+    // adjust half a tile on y because the tile starts all visible on the Y axis but half on x
+    let camOffset: vec2;
+    // the way to align the camera depends on the device - so use media queries
+    // on mouse-based device, nothing should happen
+    if (matchMedia('(pointer: fine)').matches) camOffset = [0, 0];
+    // on portrait device, align it within the section of screen visible above the sheet
+    else if (matchMedia('(orientation: portrait)').matches) camOffset = screenToGameCoords(
+      innerWidth / 2, 
+      // find the space remaining above the sheet and divide in half
+      (innerHeight - 386 / 256 * innerWidth) / 2 + 100
+      );
+    // on landscape device, align it to the centre of the area visible to the right of the sheet
+    else if (matchMedia('(orientation: landscape)').matches) camOffset = screenToGameCoords(
+      // centre it within the space remaining beside the sheet
+      (256 / 386 * innerHeight) + (innerWidth - 256 / 386 * innerHeight) / 2, 
+      // find the space remaining above the sheet and divide in half
+      innerHeight / 2 + 100
+      );
+    //camOffset = screenToGameCoords(innerWidth / 2, innerHeight / 2 + 100);
     // must be multiplied by two because each tile represents 2 WebGL coordinates
     vec2.multiply(camOffset, camOffset, [2, 2]);
 
@@ -163,25 +181,6 @@ export default class Camera {
    * return to normal view
    */
   exitFocus () {
-
-    // construct new cameraMatrix based on position
-    this.cameraMatrix = mat4.create();
-    // align camera to starting position
-    mat4.translate(this.cameraMatrix,
-      this.cameraMatrix,
-      [0.0, 1.0, -3.0]);
-
-    // turn camera to isometric angle
-    mat4.rotateX(this.cameraMatrix,
-      this.cameraMatrix,
-      45 * Math.PI / 180
-    );
-    mat4.rotateY(this.cameraMatrix,
-      this.cameraMatrix,
-      45 * Math.PI / 180
-    );
-    // and move it into position
-    mat4.translate(this.cameraMatrix, this.cameraMatrix, [-this.x, 0, -this.z]);
 
     // turn off focus mode
     this._inFocusMode = false;

@@ -7,7 +7,10 @@ import { openDB, deleteDB, IDBPDatabase } from 'idb';
 export interface GameSave {
 
   lastSaved: number,
-
+  timePlayed: number,
+  people: any[][],
+  nextPersonId: number,
+  money: number,
   map: Uint8Array
 
 }
@@ -56,5 +59,18 @@ export async function getSave (db: IDBPDatabase, key: string) {
 
   // read the key
   return await saves.get(key);
+
+}
+
+/**
+ * Write a GameSave object to the store
+ */
+export async function writeSave (db: IDBPDatabase, key: string, save: GameSave) {
+
+  // start a readwrite transaction
+  const saves = db.transaction('saves', 'readwrite').objectStore('saves');
+
+  // read the key
+  return await saves.put(save, key);
 
 }

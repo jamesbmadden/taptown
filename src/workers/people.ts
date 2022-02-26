@@ -2,6 +2,7 @@ import * as Comlink from "comlink";
 // import list of names for use in generating people
 // this is a big file, potentially consider lazy loading in the future?
 import { firstNames, lastNames } from '../lists/names';
+import { GameSave } from '../db';
 
 // an ease-of-use function for generating a random integer
 const randomInt = (min: number, max: number) => Math.floor(min + Math.random() * (max - min + 1));
@@ -46,6 +47,18 @@ class People {
 
   test (worker: String) {
     console.log('recieved cross-worker from ' + worker);
+  }
+
+  /**
+   * Load people data from the save
+   */
+  loadSave (saveData: GameSave) {
+
+    this.people = saveData.people;
+    this.properties.population = this.people.flat().length;
+    this.nextPersonId = saveData.nextPersonId;
+    this._cb(this.properties);
+
   }
 
   /**

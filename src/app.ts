@@ -32,6 +32,8 @@ let mapSize: number;
 let camera = new Camera();
 // the coordinate mouse is hovering over (default to smth way out of the way)
 let mouseCoords = [-100, -100];
+// keep track of the save file name
+let saveId: String;
 
 // allow other files to easily access certain variables
 export { ambient, buildings, people, camera, mapSize };
@@ -102,6 +104,13 @@ canvas.addEventListener('click', (event: MouseEvent) => {
   //camera.enterFocus(gameCoords);
 });
 
+document.querySelector('.writeSaveButton').addEventListener('click', async () => {
+
+  // write to save
+  await buildings.writeSave(saveId);
+
+});
+
 init();
 
 // initate everything before running the game loop
@@ -123,7 +132,7 @@ async function init () {
 
   // Before setting up workers, data must be loaded. Check to see if save ID was provided
   const searchParams = new URLSearchParams(location.search);
-  const saveId = searchParams.get('save');
+  saveId = searchParams.get('save');
 
   // if no save ID provided, alert and redirect to landing page
   if (!saveId) {

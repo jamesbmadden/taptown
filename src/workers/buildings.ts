@@ -1,5 +1,5 @@
 import * as Comlink from "comlink";
-import loadDb, { getSave, GameSave } from '../db';
+import loadDb, { getSave, writeSave, GameSave } from '../db';
 
 class Buildings {
 
@@ -35,19 +35,43 @@ class Buildings {
 
     // load save from indexedDB
     const db = await loadDb();
-    const save = await getSave(db, saveName);
+    const save: GameSave = await getSave(db, saveName);
     
     // set the map to save.map
     this.map = save.map;
     // get the proper size of the world
     this.mapSize = Math.sqrt(save.map.length);
     // build a road map
-    this._roads = new Array(save.map.length);
+    this._buildRoadMap();
+
+    // give the people worker the data to update
+    await this.people.loadSave(save);
 
     // map updated! Trigger callback
     this._cb(this.map);
     // return it to main thread
     return save;
+
+  }
+
+  /**
+   * Write the map and other gamme data to the IndexedDB storage
+   */
+  async writeSave (saveName) {
+
+    // first, gather all the necessary data from the disparate sources
+    const save: GameSave = {
+      lastSaved: Date.now(),
+      timePlayed: 0,
+      map: this.map,
+      people: await this.people.people,
+      nextPersonId: await this.people.nextPersonId,
+      money: await this.people.properties.money
+    }; 
+
+    // now write this data to the storage
+    const db = await loadDb();
+    await writeSave(db, saveName, save);
 
   }
 
@@ -88,6 +112,24 @@ class Buildings {
     // now callback with the map
     this._cb(this.map);
 
+
+  }
+
+  /**
+   * Take game world data and build a road map
+   */
+  _buildRoadMap () {
+
+    // new empty road map
+    this._roads = new Array(this.map.length);
+
+    // run through every tile in the map
+    for (let i = 0; i < this.map.length; i++) {
+
+      // check if the tile is a road and if so, set the right index on the _roads list to true
+      if (this.map[i] >= 1 && this.map[i] <= 16) this._roads[i] = true;
+
+    }
 
   }
 

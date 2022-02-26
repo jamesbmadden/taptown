@@ -38,7 +38,11 @@ async function main () {
     const emptySave: GameSave = {
 
       lastSaved: Date.now(),
-      map: new Uint8Array(Array(4096).fill(0)) // default game is 64x64 and empty
+      timePlayed: 0,
+      map: new Uint8Array(Array(4096).fill(0)), // default game is 64x64 and empty
+      people: [],
+      nextPersonId: 0,
+      money: 100
 
     }
 

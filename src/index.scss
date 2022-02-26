@@ -58,10 +58,13 @@ img {
   p { margin: 0; }
 }
 .save-list {
+  display: none;
   grid-column: 1 / -1;
-  display: grid;
   grid-template-columns: repeat(auto-fit, 256px);
   width: 100%;
+}
+.save-list.show {
+  display: grid;
 }
 
 @media (orientation: landscape) {

@@ -49,6 +49,7 @@
 .tile-menu {
   position: absolute;
   background: url('../img/ui/popup.png');
+  background-size: cover;
   z-index: 2;
   transform-origin: top left;
   transform-origin: var(--transform-origin);
@@ -56,7 +57,7 @@
   // in portrait mode, adjust so it fills bottom part of screen
   @media (orientation: portrait) {
     left: 0;      bottom: 0;
-    width: 100%;  height: 50%;
+    width: 100vw;  height: 386px / 256px * 100vw;
     animation: openTilePortrait 0.2s ease;
     &.reverse {
       animation: closeTilePortrait 0.2s ease;

@@ -22,8 +22,10 @@ export default class TileMenu extends LitElement {
   static styles = css([styles]);
 
   close () {
-    // delete this element
-    this.remove();
+    // trigger the close animation
+    this.shadowRoot.querySelector('.tile-menu').classList.add('reverse');
+    // delete this element after the animation ends
+    setTimeout(() => this.remove(), 200);
     // then in the future we have to reset the camera but for now we're good
   }
 

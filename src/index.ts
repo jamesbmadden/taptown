@@ -52,7 +52,9 @@ async function main () {
 
     console.log(key, 'save added');
 
-    updateSavesList(await getSavesList(db));
+    // now start the game
+
+    location.href = `./app/?save=${encodeURIComponent(key)}`;
 
 
   });

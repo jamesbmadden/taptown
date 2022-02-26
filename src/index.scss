@@ -28,7 +28,7 @@ img {
 
 .home-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 256px);
+  grid-template-columns: repeat(auto-fit, 256px);
   width: 100%;
   justify-content: center;
   flex-wrap: wrap;
@@ -56,6 +56,12 @@ img {
   padding: 0; padding-right: 1rem;
   h2 { margin: 0.2rem; }
   p { margin: 0; }
+}
+.save-list {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 256px);
+  width: 100%;
 }
 
 @media (orientation: landscape) {

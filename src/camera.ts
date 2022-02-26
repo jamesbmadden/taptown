@@ -150,8 +150,8 @@ export default class Camera {
     vec2.multiply(camOffset, camOffset, [2, 2]);
 
     // set the x and z to this position
-    this.x = buildingX - camOffset[0];
-    this.z = buildingZ - camOffset[1];
+    this.x = buildingX * 2 - camOffset[0];
+    this.z = buildingZ * 2 - camOffset[1];
 
     // now set the camera position
     this.cameraMatrix = mat4.create();

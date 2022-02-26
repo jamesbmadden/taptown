@@ -32,10 +32,10 @@
       }
     </script>
 
-    <script type="module" crossorigin src="/taptown/assets/landing.3671c80d.js"></script>
+    <script type="module" crossorigin src="/taptown/assets/landing.c45aa8f7.js"></script>
     <link rel="modulepreload" href="/taptown/assets/modulepreload-polyfill.b7f2da20.js">
     <link rel="modulepreload" href="/taptown/assets/vendor.fcf43544.js">
-    <link rel="stylesheet" href="/taptown/assets/landing.11d65904.css">
+    <link rel="stylesheet" href="/taptown/assets/landing.991a0d65.css">
   </head>
   <body>
     <div class="bg-container">
@@ -45,12 +45,22 @@
       <img class="logo" src="./img/logo.png" alt="TapTown">
     </header>
     <main>
-      <h2>Saves</h2>
-      <ul class="game-saves"></ul>
-      <h3>Add New Save</h3>
-      <label for="new-save-name">New Save:</label><input id="new-save-name" name="new-save-name" type="string"><button class="add-save">Add</button>
+      <div class="home-cards">
+        <div class="card card-install" onclick="document.querySelector('pwa-install').openPrompt()">
+          <div class="card-inner">
+            <h2>Install TapTown</h2>
+            <p>Add TapTown to your homescreen for easy access and a full app experience.</p>
+          </div>
+        </div>
+        
+        <div class="card card-newsave">
+          <div class="card-inner">
+            <h2>Add New Save</h2>
+            <label for="new-save-name">New Save:</label><input id="new-save-name" name="new-save-name" type="string"><button class="add-save">Add</button>
+          </div>
+        </div>
+      </div>
       <pwa-install usecustom></pwa-install>
-      <button class="pwa-button" onclick="document.querySelector('pwa-install').openPrompt()">Open PWA-Install</button>
     </main>
   </body>
 </html>

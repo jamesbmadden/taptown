@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .close-button {
   position: absolute;
   top: 1rem;
@@ -62,7 +64,7 @@
   // in portrait mode, adjust so it fills bottom part of screen
   @media (orientation: portrait) {
     left: 0;      bottom: 0;
-    width: 100vw;  height: 386px / 256px * 100vw;
+    width: 100vw;  height: math.div(386px, 256px) * 100vw;
     animation: openTilePortrait 0.2s ease;
     &.reverse {
       animation: closeTilePortrait 0.2s ease;
@@ -71,7 +73,7 @@
   // in landscape mode, put it on the side
   @media (orientation: landscape) {
     left: 0;      top: 0;
-    width: 256px / 386px * 100vh; height: 100vh;
+    width: math.div(256px, 386px) * 100vh; height: 100vh;
     animation: openTileLandscape 0.2s ease;
     &.reverse {
       animation: closeTileLandscape 0.2s ease;

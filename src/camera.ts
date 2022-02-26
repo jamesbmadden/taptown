@@ -1,4 +1,5 @@
 import { mat4, vec2 } from 'gl-matrix';
+import { screenToGameCoords } from './utils';
 
 /**
  * Camera manages camera position and tracks pointer events
@@ -124,48 +125,35 @@ export default class Camera {
     // set focus mode to true
     this._inFocusMode = true;
 
-    // now transition from starting position to end position
-    const startTime = Date.now();
+    // find out how much the camera must be moved to align this tile to the centre
+    // to centre the tile it must also be adjusted by half a tile width vertically and horizontally
+    const camOffset: vec2 = screenToGameCoords(innerWidth / 2 + 200, innerHeight / 2 - 200);
 
-    const enteringFocusFrame = () => {
+    // set the x and z to this position
+    this.x = buildingX - camOffset[0];
+    this.z = buildingZ - camOffset[1];
 
-      // percentage of the transition complete
-      let progress = (Date.now() - startTime) / 1000;
-      if (progress > 1) progress = 1;
-      // now weighted average the two angles to see what angle to use
-      // formula: INITIAL * 1 - progress + FINAL * progress;
-      const translateX = -this.x * (1 - progress) + ((-buildingX * 2) + (innerWidth / 200)) * progress;
-      const translateZ = -this.z * (1 - progress) + ((-buildingZ * 2) + (innerHeight / 200)) * progress;
-      const scaleFactor = 1// + progress;
+    // now set the camera position
+    this.cameraMatrix = mat4.create();
+    mat4.translate(this.cameraMatrix,
+      this.cameraMatrix,
+      [0.0, 0.0, -3.0]);
 
-      // now create the matrix
-      // create camera matrix for the building
-      this.cameraMatrix = mat4.create();
-      // align camera to starting position
-      mat4.translate(this.cameraMatrix,
-        this.cameraMatrix,
-        [0.0, 1.0, -3.0]);
+    // turn camera to isometric angle
+    mat4.rotateX(this.cameraMatrix,
+      this.cameraMatrix,
+      45 * Math.PI / 180
+    );
+    mat4.rotateY(this.cameraMatrix,
+      this.cameraMatrix,
+      45 * Math.PI / 180
+    );
 
-      // turn camera to isometric angle
-      mat4.rotateX(this.cameraMatrix,
-        this.cameraMatrix,
-        45 * Math.PI / 180
-      );
-      mat4.rotateY(this.cameraMatrix,
-        this.cameraMatrix,
-        45 * Math.PI / 180
-      );
-      // scale the world
-      mat4.scale(this.cameraMatrix, this.cameraMatrix, [scaleFactor, scaleFactor, scaleFactor]);
-      // and move it into position
-      mat4.translate(this.cameraMatrix, this.cameraMatrix, [translateX, 0, translateZ]);
+    mat4.translate(this.cameraMatrix, 
+      this.cameraMatrix,
+      [-this.x, 0, -this.z]
+    );
 
-      // repeat if progress isn't done
-      if (progress < 1) requestAnimationFrame(enteringFocusFrame);
-
-    }
-
-    requestAnimationFrame(enteringFocusFrame);
 
   }
 

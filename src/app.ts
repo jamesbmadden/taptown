@@ -18,6 +18,8 @@ import shadowRender, { createFrameBuffer } from './shadow';
 
 import { createWorkers, ambient, buildings, people } from './workers';
 
+import { screenToGameCoords } from './utils';
+
 // global variables
 const canvas: HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
 // how many buildings should fit on-screen horizontally (an iPhone should roughly show 2 for reference)
@@ -47,6 +49,7 @@ canvas.height = innerHeight * devicePixelRatio;
 // make sure camera knows how to adjust between device pixels and WebGL tiles
 let ratioX = innerWidth / buildingsPerRow;
 let ratioY = innerHeight / buildingsPerColumn; // calculate buildings per column
+
 camera.setPixelToTileRatio(ratioX, ratioY);
 
 let gl = canvas.getContext('webgl');
@@ -70,16 +73,9 @@ window.addEventListener('resize', () => {
 // on mouse move get tile currently highlighted
 canvas.addEventListener('mousemove', (event: MouseEvent) => {
 
-  // first, get it based on the X/Y position, THEN change perspective
-  // these two have a top-down perspective, and that must be adjusted by 45 degrees on both x and y axes
-  const localX = event.clientX / ratioX / 2;
-  // BOTTOM left of screen is 0, so this number will be negative
-  const localY = (event.clientY - window.innerHeight) / ratioX / 2 * 1.425;
+  // get the local game coords from the utils function
+  const gameCoords: vec2 = screenToGameCoords(event.clientX, event.clientY);
 
-  const gameCoords: vec2 = [localX, localY];
-
-  // now use vectors to change perspective
-  vec2.rotate(gameCoords, gameCoords, [0, 0], 45 * Math.PI / 180);
   // now it must be adjusted according to the camera's position
   // camera position must be adjusted slightly to match what the screen actually looks like
   // adjustment for Y should *hopefully* be automatic from the new localY code

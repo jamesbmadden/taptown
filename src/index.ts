@@ -87,7 +87,7 @@ function updateSavesList (savesList: Array<any>) {
     const card = document.createElement('a');
     card.className = 'card card-saves';
     card.href = `./app/?save=${encodeURIComponent(save)}`;
-    card.innerHTML = `<div class="card-inner"><h2>${save}</h2></div>`;
+    card.innerHTML = `<div class="card-inner"><h2>${save}</h2><p>Tap to Play!</p></div>`;
 
     // add to the savesListElement
     homeCardsElement.appendChild(card);

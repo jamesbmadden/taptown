@@ -131,7 +131,7 @@ export default class Camera {
     let camOffset: vec2;
     // the way to align the camera depends on the device - so use media queries
     // on mouse-based device, nothing should happen
-    if (matchMedia('(pointer: fine)').matches) camOffset = [0, 0];
+    if (matchMedia('(pointer: fine)').matches) return;
     // on portrait device, align it within the section of screen visible above the sheet
     else if (matchMedia('(orientation: portrait)').matches) camOffset = screenToGameCoords(
       innerWidth / 2, 

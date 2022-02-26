@@ -127,7 +127,9 @@ export default class Camera {
 
     // find out how much the camera must be moved to align this tile to the centre
     // to centre the tile it must also be adjusted by half a tile width vertically and horizontally
-    const camOffset: vec2 = screenToGameCoords(innerWidth / 2 + 200, innerHeight / 2 - 200);
+    const camOffset: vec2 = screenToGameCoords(innerWidth / 2, innerHeight / 2);
+    // must be multiplied by two because each tile represents 2 WebGL coordinates
+    vec2.multiply(camOffset, camOffset, [2, 2]);
 
     // set the x and z to this position
     this.x = buildingX - camOffset[0];

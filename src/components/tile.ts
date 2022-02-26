@@ -26,12 +26,16 @@ export default class TileMenu extends LitElement {
     this.shadowRoot.querySelector('.tile-menu').classList.add('reverse');
     // delete this element after the animation ends
     setTimeout(() => this.remove(), 200);
-    // then in the future we have to reset the camera but for now we're good
+    // @ts-ignore and free the camera
+    camera.exitFocus();
   }
 
   async connectedCallback() {
 
     super.connectedCallback();
+
+    // @ts-ignore set camera to focus mode on this tile
+    camera.enterFocus([this.x, this.z]);
 
     // set click position so popup can be by mouse on desktop
     let transformOrigin = '';

@@ -66,7 +66,7 @@
   // in landscape mode, put it on the side
   @media (orientation: landscape) {
     left: 0;      top: 0;
-    width: 256px; height: 100%;
+    width: 256px / 386px * 100vh; height: 100vh;
     animation: openTileLandscape 0.2s ease;
     &.reverse {
       animation: closeTileLandscape 0.2s ease;

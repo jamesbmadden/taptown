@@ -27,3 +27,6 @@ export function screenToGameCoords (x: number, y: number) {
   return gameCoords;
 
 }
+
+// an ease-of-use function for generating a random integer
+export const randomInt = (min: number, max: number) => Math.floor(min + Math.random() * (max - min + 1));

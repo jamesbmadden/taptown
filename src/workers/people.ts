@@ -3,9 +3,7 @@ import * as Comlink from "comlink";
 // this is a big file, potentially consider lazy loading in the future?
 import { firstNames, lastNames } from '../lists/names';
 import { GameSave } from '../db';
-
-// an ease-of-use function for generating a random integer
-const randomInt = (min: number, max: number) => Math.floor(min + Math.random() * (max - min + 1));
+import { randomInt } from '../utils';
 
 interface Person {
   name: [String, String],

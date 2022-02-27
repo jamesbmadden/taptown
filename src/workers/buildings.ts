@@ -5,6 +5,7 @@ class Buildings {
 
   // wrapped port to communicate with people
   people;
+  ambient;
 
   mapSize: number;
 
@@ -16,11 +17,13 @@ class Buildings {
   /**
    * Build the correct map size
    */
-  constructor (fromPeople, toPeople) {
+  constructor (fromPeople, toPeople, fromAmbient, toAmbient) {
 
     // recieve the port for people and use comlink to allow communication
     Comlink.expose(this, toPeople);
+    Comlink.expose(this, toAmbient);
     this.people = Comlink.wrap(fromPeople);
+    this.ambient = Comlink.wrap(fromAmbient);
 
     this.people.test('buildings');
     

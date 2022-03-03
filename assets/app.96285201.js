@@ -146,7 +146,7 @@ void main(void) {
   }
 }`,L=globalThis&&globalThis.__decorate||function(e,t,i,r){var o=arguments.length,a=o<3?t:r===null?r=Object.getOwnPropertyDescriptor(t,i):r,c;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")a=Reflect.decorate(e,t,i,r);else for(var s=e.length-1;s>=0;s--)(c=e[s])&&(a=(o<3?c(a):o>3?c(t,i,a):c(t,i))||a);return o>3&&a&&Object.defineProperty(t,i,a),a};let _=class extends Qe{close(){this.shadowRoot.querySelector(".tile-menu").classList.add("reverse"),setTimeout(()=>this.remove(),200),camera.exitFocus()}async connectedCallback(){super.connectedCallback(),camera.enterFocus([this.x,this.z]);let t="";this.mouse[0]<innerWidth/2?(this.style.setProperty("--mouse-x",`${this.mouse[0]}px`),t="left "):(this.style.setProperty("--mouse-x",`${this.mouse[0]-256}px`),t="right "),this.mouse[1]<innerHeight/2?(this.style.setProperty("--mouse-y",`${this.mouse[1]}px`),t+="top"):(this.style.setProperty("--mouse-y",`${this.mouse[1]-386}px`),t+="bottom"),this.style.setProperty("--transform-origin",t),this.residents=await j.getResidents(this.x,this.z)}render(){var t;return ce`
       <!-- cover canvas prevents further interaction with the canvas until the menu is closed -->
-      <div class="cover-canvas"></div>
+      <div class="cover-canvas" @click=${this.close.bind(this)}></div>
       <div class="tile-menu">
         <img src="../icons/close.png" alt="close" class="close-button" @click=${this.close.bind(this)} />
         <h1>${this.x}, ${this.z}</h1>

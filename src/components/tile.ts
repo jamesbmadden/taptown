@@ -70,7 +70,7 @@ export default class TileMenu extends LitElement {
 
     return html`
       <!-- cover canvas prevents further interaction with the canvas until the menu is closed -->
-      <div class="cover-canvas"></div>
+      <div class="cover-canvas" @click=${this.close.bind(this)}></div>
       <div class="tile-menu">
         <img src="../icons/close.png" alt="close" class="close-button" @click=${this.close.bind(this)} />
         <h1>${this.x}, ${this.z}</h1>

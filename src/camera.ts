@@ -28,8 +28,10 @@ export default class Camera {
 
   constructor () {
 
+    mat4.lookAt(this.cameraMatrix, [-3, 4.275, 3], [0, 0, 0], [0, 1, 0]);
+
     // align camera to starting position
-    mat4.translate(this.cameraMatrix,
+    /*mat4.translate(this.cameraMatrix,
       this.cameraMatrix,
       [0.0, 0.0, -3.0]);
 
@@ -41,7 +43,7 @@ export default class Camera {
     mat4.rotateY(this.cameraMatrix,
       this.cameraMatrix,
       45 * Math.PI / 180
-    );
+    );*/
 
     // now we need some events
     document.addEventListener('pointerdown', event => {

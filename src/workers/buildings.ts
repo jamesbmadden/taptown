@@ -51,7 +51,7 @@ class Buildings {
     await this.people.loadSave(save);
 
     // map updated! Trigger callback
-    this._cb(this.map);
+    this.sendUpdates();
     // return it to main thread
     return save;
 
@@ -98,7 +98,7 @@ class Buildings {
     }
 
     // now trigger an update on the main thread
-    this._cb(this.map);
+    this.sendUpdates();
 
   }
 
@@ -113,7 +113,7 @@ class Buildings {
     // run _drawRoads
     this._drawRoads();
     // now callback with the map
-    this._cb(this.map);
+    this.sendUpdates();
 
 
   }
@@ -209,6 +209,11 @@ class Buildings {
 
   static log () {
     console.log('buildings worker running');
+  }
+
+  async sendUpdates () {
+    this._cb(this.map);
+    await this.ambient.setMap(this.map);
   }
 
   setCallback (cb) {

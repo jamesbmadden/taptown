@@ -6,6 +6,11 @@ class Ambient {
   people;
   ambient;
 
+  // recieves this from buildings
+  map = new Uint8Array();
+  // and recieves this from people
+  population = 0;
+
   constructor (fromPeople, toPeople, fromBuildings, toBuildings) {
 
     // recieve port for people
@@ -18,6 +23,16 @@ class Ambient {
     this.people.test('ambient');
     
 
+  }
+
+  /**
+   * Recieve map from buildings and update local copy
+   */
+  setMap (map: Uint8Array) {
+    this.map = map;
+  }
+  setPopulation (population: number) {
+    this.population = population;
   }
 
   static log () {

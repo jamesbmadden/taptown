@@ -55,7 +55,7 @@ class People {
     this.people = saveData.people;
     this.properties.population = this.people.flat().length;
     this.nextPersonId = saveData.nextPersonId;
-    this._cb(this.properties);
+    this.sendUpdates();
 
   }
 
@@ -91,7 +91,7 @@ class People {
     this.people[tile] = household;
     // update the world properties to match the new population
     this.properties.population = this.people.flat().length;
-    this._cb(this.properties);
+    this.sendUpdates();
 
   }
 
@@ -111,6 +111,11 @@ class People {
 
   static log () {
     console.log('people worker running');
+  }
+
+  async sendUpdates () {
+    this._cb(this.properties);
+    await this.ambient.setPopulation(this.properties.population);
   }
 
   setCallback (cb) {

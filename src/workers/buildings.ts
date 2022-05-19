@@ -90,8 +90,8 @@ class Buildings {
     this._drawRoads();
     this.map[mapId] = type;
 
-    // if the type is 255 (debug, currently used as housing), tell people to move some people in!
-    if (type === 255) {
+    // if the type is 17 (house), tell people to move some people in!
+    if (type === 17) {
 
       await this.people.moveIn(mapId, type);
 

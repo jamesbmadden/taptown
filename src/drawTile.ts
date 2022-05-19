@@ -39,6 +39,8 @@ import roadSingle from './models/Road-single.gltf?url';
 // @ts-ignore
 import outOfBounds from './models/outofbounds.gltf?url';
 // @ts-ignore
+import house from './models/house.gltf?url';
+// @ts-ignore
 import debug from './models/Cafe.gltf?url';
 
 /**
@@ -69,6 +71,7 @@ let initiated = false;
  * 15 = road (_|_) ✅
  * 16 = road (single) ✅
  * 
+ * 17 = house 
  * ...
  * 
  * 254 = out of bounds
@@ -96,6 +99,8 @@ export async function init (gl: WebGLRenderingContext) {
   models[14] = await loadModel(gl, roadTriLeft);
   models[15] = await loadModel(gl, roadTriUp);
   models[16] = await loadModel(gl, roadSingle);
+  // load the house
+  models[17] = await loadModel(gl, house);
 
   // load out of bounds model
   models[254] = await loadModel(gl, outOfBounds);

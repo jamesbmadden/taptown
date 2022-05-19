@@ -82,7 +82,7 @@ export default class TileMenu extends LitElement {
           }}>Build Road</button>
           <button @click=${() => {
             // build a cafe at this tile, then close
-            buildings.setTile(this.x, this.z, 255);
+            buildings.setTile(this.x, this.z, 17);
             this.close();
           }}>Build Cafe</button>
         </div>

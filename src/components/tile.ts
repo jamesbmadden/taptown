@@ -84,7 +84,7 @@ export default class TileMenu extends LitElement {
             // build a cafe at this tile, then close
             buildings.setTile(this.x, this.z, 17);
             this.close();
-          }}>Build Cafe</button>
+          }}>Build House</button>
         </div>
         <div class="residents">
           <h2>Residents</h2>
